@@ -1,0 +1,292 @@
+\documentclass[UTF8]{ctexart}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\usepackage{tikz}
+\usepackage[colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue]{hyperref}
+\geometry{margin=1in}
+
+\newtheorem{definition}{定义}[section]
+\newtheorem{proposition}[definition]{命题}
+\newtheorem{remark}[definition]{注记}
+\newtheorem{example}[definition]{例}
+\newtheorem{fact}[definition]{事实}
+\newtheorem{theorem}[definition]{定理}
+\newtheorem{algorithm}[definition]{算法}
+
+\title{《计算拓扑数据分析》第三章笔记：持续算法}
+\author{“基于持续同调的拓扑特征识别及其应用”SRTP项目组}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+\section*{章节概览}
+\addcontentsline{toc}{section}{章节概览}
+
+本章聚焦于持续同调的\textbf{计算方面}。给定一个单纯滤过，我们的目标是计算其持续图。这等价于找出所有导致同调类出生与死亡的单纯形配对。我们将依次介绍：
+
+\begin{enumerate}
+    \item \textbf{瓶颈距离的计算}（\hyperref[sec:bottleneck]{BOTTLENECK 算法}）：通过二分图完美匹配计算两个持续图之间的距离；
+    \item \textbf{配对算法}（\hyperref[sec:pairpersistence]{PAIRPERSISTENCE 算法}）：组合视角下的持续配对算法；
+    \item \textbf{矩阵约简算法}（\hyperref[sec:matpersistence]{MATPERSISTENCE 算法}）：持续同调计算的核心算法，通过边界矩阵的列消元计算持续配对；
+    \item \textbf{高效实现技巧}（\hyperref[sec:clearpersistence]{CLEARPERSISTENCE 算法}）：清除策略与上同调对偶优化。
+\end{enumerate}
+
+\section{瓶颈距离的计算}
+\label{sec:bottleneck}
+
+在 3.2.1 节中我们定义了瓶颈距离，现在考虑其计算问题。
+
+\subsection{问题转化}
+
+给定两个持续图 \(\operatorname{Dgm}_p(\mathcal{F}_f)\) 和 \(\operatorname{Dgm}_p(\mathcal{F}_g)\)，设 \(A\) 和 \(B\) 分别为其非对角点集。为处理两个图点数不同的情况，我们将每个点投影到对角线上：
+
+\begin{itemize}
+    \item \(\bar{a}\)：点 \(a \in A\) 在对角线 \(\Delta\) 上的最近点；
+    \item \(\bar{b}\)：点 \(b \in B\) 在对角线 \(\Delta\) 上的最近点；
+    \item 构造扩展点集：\(\tilde{A} = A \cup \bar{B}\)，\(\tilde{B} = B \cup \bar{A}\)。
+\end{itemize}
+
+则瓶颈距离等于：
+\[
+d_b = \min_{\pi} \max_{a \in \tilde{A}} \|a - \pi(a)\|_\infty,
+\]
+其中 \(\pi\) 遍历 \(\tilde{A}\) 到 \(\tilde{B}\) 的所有双射。
+
+\subsection{算法思路}
+
+\begin{algorithm}[BOTTLENECK]
+\label{alg:bottleneck}
+\begin{enumerate}
+    \item 计算所有可能的 \(O(n^2)\) 个点对 \(L_\infty\) 距离，排序得 \(\delta_0 \le \delta_1 \le \cdots \le \delta_{n'}\)；
+    \item 二分搜索最小的 \(\delta\)，使得存在一个完美匹配；
+    \item 对给定的 \(\delta\)，构造二分图 \(G = (\tilde{A} \cup \tilde{B}, E)\)，其中 \((a,b) \in E\) 当且仅当 \(\|a - b\|_\infty \le \delta\)；
+    \item 检查是否存在完美匹配（Hopcroft-Karp 算法 \(O(n^{2.5})\)，利用几何结构可优化至 \(O(n^{1.5})\)）；
+    \item 若存在，减小 \(\delta\)；否则增大 \(\delta\)。
+\end{enumerate}
+\end{algorithm}
+
+\begin{remark}
+算法的复杂度为 \(O(n^{1.5}\log n)\)，其中 \(n\) 是持续图中非对角点的数量。为避免排序所有 \(O(n^2)\) 个距离，可利用点的几何嵌入直接进行二分搜索。
+\end{remark}
+
+\section{持续配对算法（PAIRPERSISTENCE）}
+\label{sec:pairpersistence}
+
+\subsection{基本观察}
+
+我们假设输入是\textbf{逐单形滤过}：
+\[
+\emptyset = K_0 \hookrightarrow K_1 \hookrightarrow \cdots \hookrightarrow K_n = K,
+\]
+其中 \(K_j \setminus K_{j-1} = \sigma_j\) 为单个单纯形。
+
+\begin{fact}[添加单纯形时的两种可能]
+\label{fact:positive-negative}
+添加一个 \(p\)-单纯形 \(\sigma_j\) 时，恰好发生以下两种情况之一：
+\begin{enumerate}
+    \item \textbf{正单纯形（Positive）}：创建一个非边界的 \(p\)-闭链，\(\beta_p\) 增加 1；
+    \item \textbf{负单纯形（Negative）}：销毁一个已有的 \((p-1)\)-闭链，\(\beta_{p-1}\) 减少 1。
+\end{enumerate}
+\end{fact}
+
+\begin{remark}
+正单纯形也称为“创建者（creator）”，负单纯形也称为“销毁者（destructor）”。每个负单纯形通过“最年轻优先”规则唯一配对一个正单纯形。
+\end{remark}
+
+\subsection{配对规则}
+
+当一个 \(p\)-单纯形 \(\sigma_j\) 被添加时，检查其边界 \(\partial\sigma_j\) 是否是一个边界闭链（即已在当前同调群中为零）：
+
+\begin{itemize}
+    \item 若 \(\partial\sigma_j\) 已是边界，则 \(\sigma_j\) 创建了一个新的 \(p\)-维同调类（正单纯形）；
+    \item 若 \(\partial\sigma_j\) 不是边界，则 \(\sigma_j\) 销毁了由某个更早的 \((p-1)\)-单纯形创建的类（负单纯形）。
+\end{itemize}
+
+为找到被销毁类的出生点，我们从 \(\partial\sigma_j\) 中取出\textbf{最年轻的}未配对的 \((p-1)\)-单纯形——这就是“最年轻优先”原则。
+
+\subsection{算法描述}
+
+\begin{algorithm}[PAIRPERSISTENCE]
+\label{alg:pairpersistence}
+\textbf{输入}：逐单形滤过的单纯形序列 \(\sigma_1, \sigma_2, \dots, \sigma_n\)
+
+\textbf{输出}：每个单纯形的正/负标记及持续配对
+
+\begin{enumerate}
+    \item 对 \(j = 1\) 到 \(n\)：
+    \begin{enumerate}
+        \item 令 \(c := \partial_p \sigma_j\)；
+        \item 令 \(\sigma_i\) 为 \(c\) 中最年轻的未配对的 \((p-1)\)-单纯形；
+        \item 当 \(\sigma_i\) 已配对且 \(c\) 非空时：
+        \begin{enumerate}
+            \item 令 \(c'\) 为与 \(\sigma_i\) 配对的单纯形所销毁的闭链；
+            \item \(c := c' + c\)（模 2 加法）；
+            \item 更新 \(\sigma_i\) 为 \(c\) 中最年轻的未配对的 \((p-1)\)-单纯形；
+        \end{enumerate}
+        \item 若 \(c\) 非空：\(\sigma_j\) 为负单纯形，生成配对 \((\sigma_i, \sigma_j)\)；
+        \item 否则：\(\sigma_j\) 为正单纯形。
+    \end{enumerate}
+\end{enumerate}
+\end{algorithm}
+
+\section{矩阵约简算法（MATPERSISTENCE）}
+\label{sec:matpersistence}
+
+\subsection{过滤边界矩阵}
+
+\begin{definition}[过滤边界矩阵]
+\label{def:filtered-boundary}
+设滤过 \(\emptyset = K_0 \hookrightarrow K_1 \hookrightarrow \cdots \hookrightarrow K_n = K\)，单纯形按滤过顺序排列为 \(\sigma_1, \dots, \sigma_n\)。\textbf{过滤边界矩阵} \(D\) 是 \(n \times n\) 矩阵，其中
+\[
+D[i,j] = 
+\begin{cases}
+1, & \sigma_i \in \partial \sigma_j,\\
+0, & \text{否则}.
+\end{cases}
+\]
+即第 \(j\) 列表示 \(\sigma_j\) 的边界（在 \(\mathbb{Z}_2\) 系数下）。
+\end{definition}
+
+\begin{remark}
+因 \(\partial^2 = 0\)，边界矩阵满足 \(D^2 = 0\)（在适当的意义下）。
+\end{remark}
+
+\subsection{约简矩阵与低行索引}
+
+\begin{definition}[低行索引]
+\label{def:low}
+对矩阵 \(A\)，\(\operatorname{low}_A[j]\) 表示第 \(j\) 列中\textbf{最后一个} \(1\) 所在的行索引（即最大的非零行索引）。若列为空，则 \(\operatorname{low}_A[j] = -1\)。
+\end{definition}
+
+\begin{definition}[约简矩阵]
+\label{def:reduced}
+矩阵 \(A\) 称为\textbf{约简的（reduced）}，若对任意 \(j \neq j'\)，\(\operatorname{low}_A[j] \neq \operatorname{low}_A[j']\)，即所有非空列的低行索引互不相同。
+\end{definition}
+
+\begin{fact}
+约简矩阵的非零列在 \(\mathbb{Z}_2\) 上线性无关。
+\end{fact}
+
+\subsection{核心算法}
+
+MATPERSISTENCE 通过\textbf{从左到右的列加法}将过滤边界矩阵约简为约简形式。列加法 \( \operatorname{col}_j \leftarrow \operatorname{col}_j + \operatorname{col}_i\)（\(i < j\)）对应于将第 \(i\) 列加到第 \(j\) 列。
+
+\begin{algorithm}[MATPERSISTENCE]
+\label{alg:matpersistence}
+\textbf{输入}：过滤边界矩阵 \(D\)（列和行按滤过顺序排列）
+
+\textbf{输出}：约简矩阵，其中每列要么为空，要么有唯一的 \(\operatorname{low}\) 值
+
+\begin{enumerate}
+    \item 对 \(j = 1\) 到 \(|D|\)：
+    \begin{enumerate}
+        \item 当存在 \(j' < j\) 使得 \(\operatorname{low}[j'] = \operatorname{low}[j]\) 且 \(\operatorname{low}[j] \neq -1\)：
+        \begin{enumerate}
+            \item \(\operatorname{col}[j] \leftarrow \operatorname{col}[j] + \operatorname{col}[j']\)
+        \end{enumerate}
+        \item 若 \(\operatorname{low}[j] \neq -1\)，则生成配对 \((\sigma_{\operatorname{low}[j]}, \sigma_j)\)
+    \end{enumerate}
+\end{enumerate}
+\end{algorithm}
+
+\begin{remark}
+算法的核心逻辑是：当两列的低行索引冲突时，将左侧列加到右侧列上，直到冲突消除。这本质上是在矩阵上执行“最年轻优先”配对。
+\end{remark}
+
+\subsection{配对定理}
+
+\begin{theorem}[持续配对判定定理]
+\label{thm:persistence-pairing}
+设 \(D\) 为过滤边界矩阵，\(R = DV\) 为 \(D\) 的约简形式（\(V\) 为上三角矩阵）。则
+\[
+\sigma_i \text{ 与 } \sigma_j \text{ 形成持续配对} \iff \operatorname{low}_R[j] = i.
+\]
+\end{theorem}
+
+\begin{remark}
+该定理表明，持续配对完全由约简矩阵中的低行索引决定，且与具体的约简过程无关。
+\end{remark}
+
+\subsection{复杂度分析}
+
+\begin{itemize}
+    \item \textbf{MATPERSISTENCE}：\(O(n^3)\)，其中 \(n\) 为单纯形总数；
+    \item 利用稀疏矩阵表示可优化；
+    \item 使用快速矩阵乘法可达到 \(O(n^\omega)\)，其中 \(\omega \in [2, 2.373)\) 为矩阵乘法指数。
+\end{itemize}
+
+\section{高效实现技巧}
+\label{sec:clearpersistence}
+
+\subsection{清除策略（Clearing）}
+
+\begin{remark}[核心观察]
+若一个 \(p\)-单纯形 \(\sigma_j\) 是正单纯形，它将在更高维度的处理中与某个 \((p+1)\)-单纯形配对。因此在处理 \(p\) 维边界矩阵时，可\textbf{跳过这些已知的正单纯形}，不必将其约简为零列。
+\end{remark}
+
+\begin{algorithm}[CLEARPERSISTENCE]
+\label{alg:clearpersistence}
+\textbf{输入}：按维度排列的边界矩阵 \(D_1, D_2, \dots, D_d\)
+
+\textbf{输出}：约简矩阵，每个负单纯形的列具有唯一的低行索引
+
+\begin{enumerate}
+    \item MATPERSISTENCE(\(D_d\))；
+    \item 对 \(i = d-1\) 到 \(1\)：
+    \begin{enumerate}
+        \item 对 \(D_i\) 的每一列 \(j\)：
+        \begin{enumerate}
+            \item 若 \(\sigma_j\) 在处理 \(D_{i+1}\) 时已配对，则跳过该列；
+            \item 否则，执行与 MATPERSISTENCE 相同的列约简；
+            \item 若约简后非空，生成配对。
+        \end{enumerate}
+    \end{enumerate}
+\end{enumerate}
+\end{algorithm}
+
+\begin{remark}
+清除策略在实际计算中（特别是 Rips 滤过）能大幅提升效率，因为高维正单纯形的数量通常远大于负单纯形。
+\end{remark}
+
+\subsection{扭曲矩阵（上同调算法）}
+
+\begin{definition}[扭曲矩阵]
+\label{def:twisted}
+矩阵 \(D_p\) 的\textbf{扭曲矩阵} \(D_p^*\) 定义为 \(D_p\) 的“反转置”（先转置，再反转行列顺序）：
+\[
+D_p^*(i, j) = D_p(n + 1 - j, m + 1 - i).
+\]
+\end{definition}
+
+\begin{proposition}[扭曲矩阵的对偶性]
+\label{prop:twisted-duality}
+在 \(D_p\) 中配对 \((\sigma^{p-1}, \sigma^p)\) 当且仅当在 \(D_p^*\) 中配对 \((\sigma^p, \sigma^{p-1})\)。
+\end{proposition}
+
+\begin{remark}
+这一对偶性允许我们选择计算效率更高的方向：若高维单纯形较多，使用扭曲矩阵从低维往高维处理可能更优。
+\end{remark}
+
+\section*{算法总结}
+\addcontentsline{toc}{section}{算法总结}
+
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{算法} & \textbf{输入} & \textbf{输出} & \textbf{核心思想} \\
+\hline
+BOTTLENECK & 两个持续图 & 瓶颈距离 & 二分图完美匹配 + 二分搜索 \\
+\hline
+PAIRPERSISTENCE & 单纯形序列 & 持续配对 & 最年轻优先原则 \\
+\hline
+MATPERSISTENCE & 过滤边界矩阵 & 约简矩阵 + 配对 & 从左到右列消元 \\
+\hline
+CLEARPERSISTENCE & 各维边界矩阵 & 约简矩阵 & 跳过已知正单纯形 \\
+\hline
+\end{tabular}
+
+\end{document}
