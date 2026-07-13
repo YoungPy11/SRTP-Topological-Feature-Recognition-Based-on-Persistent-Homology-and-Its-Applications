@@ -1,0 +1,1332 @@
+\documentclass[UTF8]{ctexart}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\usepackage{tikz}
+\usepackage[colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue]{hyperref}
+\geometry{margin=1in}
+
+\newtheorem{definition}{定义}[section]
+\newtheorem{proposition}[definition]{命题}
+\newtheorem{remark}[definition]{注记}
+\newtheorem{example}[definition]{例}
+\newtheorem{question}[definition]{问题}
+\newtheorem{fact}[definition]{事实}
+\newtheorem{theorem}[definition]{定理}
+\newtheorem{corollary}[definition]{推论}
+
+\title{《计算拓扑数据分析》笔记：第二章 \& 第三章理论部分}
+\author{“基于持续同调的拓扑特征识别及其应用”SRTP项目组}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+% ============================================================
+% 第二章
+% ============================================================
+
+\section*{第二章 章节概览}
+\addcontentsline{toc}{section}{第二章 章节概览}
+
+《Computational Topology for Data Analysis》的第二章主要介绍拓扑数据分析（TDA）的两大核心工具：
+\begin{enumerate}
+    \item \textbf{单纯复形（Simplicial Complexes）}：用于从离散数据点构建可计算的拓扑结构。我们主要用到的两种单纯复形是Čech 复形与 Vietoris-Rips 复形，二者各有优缺点。
+    \item \textbf{同调群（Homology Groups）}：用于量化拓扑特征（如连通分量、环、空洞）的代数不变量。我们的研究中最常用的$\mathbb{Z}_{2}$系数的同调群，有时也会用到$\mathbb{Z}$和$\mathbb{Q}$。按照构造方式，同调群也有不同类型，我们主要用到三种类型：单纯同调、奇异同调和相对同调。
+\end{enumerate}
+
+\section{单纯复形（Simplicial Complexes）}
+\label{sec:simplicial-complexes}
+
+\subsection{单纯形与几何单纯复形}
+\label{subsec:simplex}
+
+\begin{definition}[单纯形]
+\label{def:simplex}
+设 \(v_0, \dots, v_k\) 是 \(\mathbb{R}^d\) 中 \(k+1\) 个仿射无关的点。它们的凸包称为一个 \(k\)-单纯形（\(k\)-simplex）。
+\begin{itemize}
+    \item 0-单纯形：顶点；
+    \item 1-单纯形：边；
+    \item 2-单纯形：三角形；
+    \item 3-单纯形：四面体。
+\end{itemize}
+\end{definition}
+
+\begin{definition}[面与余面]
+\label{def:face-coface}
+对于单纯形 \(\sigma\)：
+\begin{itemize}
+    \item 由 \(\sigma\) 的顶点子集构成的单纯形称为 \(\sigma\) 的\textbf{面（face）}。
+    \item 包含 \(\sigma\) 作为面的更高维单纯形称为 \(\sigma\) 的\textbf{余面（coface）}。
+\end{itemize}
+\end{definition}
+
+\begin{definition}[几何单纯复形]
+\label{def:geometric-complex}
+有限个单纯形的集合 \(K\)，满足：
+\begin{enumerate}
+    \item 若 \(\sigma \in K\)，则 \(\sigma\) 的所有面也属于 \(K\)（向下封闭）。
+    \item 任意两个单纯形的交集要么为空，要么是它们共同的公共面。
+\end{enumerate}
+\begin{remark}
+事实上，我们判断是否为单纯复形时只需要看是否满足向下包含即可，我们称之为在面关系下封闭，这是单纯复形的核心特征。（见下面抽象单纯复形的定义）\\
+这里的第二条是为了保证几何上看起来不病态。
+\end{remark}
+复形 \(K\) 的\textbf{底空间} \(|K|\) 定义为所有单纯形的并集。
+\end{definition}
+
+\subsection{抽象单纯复形}
+\label{subsec:abstract-complex}
+
+这里我们推广单纯复形的概念，得到抽象单纯复形，几何单纯复形是其特例，也是其一种具体实现形式。
+
+\begin{definition}[抽象单纯复形]
+\label{def:abstract-complex}
+设 \(V\) 为顶点集合。若 \(K \subseteq 2^V\)（\(V\) 的幂集）满足：若 \(\sigma \in K\)，则 \(\sigma\) 的所有非空子集也属于 \(K\)，则称 \(K\) 为抽象单纯复形。其中的元素称为单纯形。
+\end{definition}
+
+\begin{remark}
+几何单纯复形与抽象单纯复形通过\textbf{几何实现（Geometric Realization）}相互转化。任何有限抽象复形都能在某个高维欧氏空间中实现为几何复形。
+\end{remark}
+
+\begin{definition}[\(k\)-骨架]
+\label{def:skeleton}
+复形 \(K\) 的 \(k\)-骨架 \(K^{(k)}\) 是由所有维数 \(\le k\) 的单纯形构成的子复形。
+\end{definition}
+
+\subsection{星形与链环（Stars and Links）}
+\label{subsec:stars-links}
+这里我们介绍两种重要的子复形的例子——星和链环。
+\begin{definition}[星、闭星与链环]
+\label{def:star-link}
+设 \(\sigma \in K\) 为单纯形，定义：
+\begin{align*}
+    \operatorname{St}(\sigma) &= \{\tau \in K \mid \sigma \subseteq \tau\}, \\
+    \overline{\operatorname{St}}(\sigma) &= \{\tau \in K \mid \tau \subseteq \rho \text{ 对于某个 } \rho \in \operatorname{St}(\sigma)\}, \\
+    \operatorname{Lk}(\sigma) &= \{\tau \in \overline{\operatorname{St}}(\sigma) \mid \tau \cap \sigma = \emptyset\}.
+\end{align*}
+\end{definition}
+
+\begin{remark}
+\(\operatorname{St}(\sigma)\) 不一定是子复形（可能缺少某些面），而 \(\overline{\operatorname{St}}(\sigma)\) 是通过补全所有面得到的最小子复形（称为由其生成的复形），称为闭星。链环 \(\operatorname{Lk}(\sigma)\) 可以直观理解为 \(\sigma\) 在复形中的“边界邻域”，链环也是一个子复形。
+\end{remark}
+
+\subsection{流形的三角剖分}
+\label{subsec:triangulation}
+我们的研究所关心的三维空间物体以及一些高维抽象数据往往具有流形结构，但是我们具体计算同调时往往只对于单纯复形计算，因此有必要建立二者的联系，也就是通过三角剖分。实际上，同调群是同胚不变量，这是三角剖分计算同调群的基础。
+\begin{definition}[三角剖分]
+\label{def:triangulation}
+若 \(K\) 的底空间 \(|K|\) 同胚于流形 \(M\)，则称 \(K\) 是 \(M\) 的一个三角剖分。此时必有 \(\dim K = \dim M\)。（这里$\dim K$ 是指K作为单纯复形的维数（通过K的最高维单纯形的维数定义）， $\dim M$是M的流形维数。）
+\end{definition}
+
+\subsection{单纯映射}
+\label{subsec:simplicial-map}
+要研究一个空间，一个想法是研究这个空间上的映射，这里考虑的就是单纯复形之间的单纯映射。我们可以把单纯映射类比为的连续映射，把邻接的单纯映射类比为同伦的连续映射。我们研究的映射是离散化的，也就是单纯复形的顶点集之间的映射，称为顶点映射。
+\begin{definition}[单纯映射]
+\label{def:simplicial-map}
+若顶点映射 \(f: V(K_1) \to V(K_2)\) 满足：对于 \(K_1\) 中的任意单纯形 \(\{v_0,\dots,v_k\}\)，像集 \(\{f(v_0),\dots,f(v_k)\}\) 仍是 \(K_2\) 中的单纯形，则称 \(f\) 为单纯映射。
+\end{definition}
+下面的事实说明连续映射可以用单纯映射来“近似”。
+\begin{fact}[逼近定理]
+\label{fact:approximation}
+任意连续映射 \(f: |K_1| \to |K_2|\) 都可以通过对 \(K_1\) 和 \(K_2\) 做适当的细分（subdivision）后，被一个单纯映射 \(g\) 紧密逼近。这里的“紧密逼近”意指：对于任意点 \(x \in |K_1|\)，在几何实现中，存在 \(K_2\) 的一个单纯形同时包含 \(f(x)\) 和 \(g(x)\)。
+\end{fact}
+
+\begin{definition}[邻接映射]
+\label{def:contiguous-map}
+两个单纯映射 \(f, g: K_1 \to K_2\) 称为\textbf{邻接（contiguous）}的，若对于任意单纯形 \(\sigma \in K_1\)，\(f(\sigma) \cup g(\sigma)\) 仍包含在 \(K_2\) 的某个单纯形中。
+\end{definition}
+正如代数拓扑中同伦的映射取同调之后的同态相同，这里邻接的单纯映射取同调之后的同态也相同，这一点会在后面介绍。
+
+\section{神经、Čech 复形与 Rips 复形}
+\label{sec:nerve-cech-rips}
+这一节介绍我们研究要用到的两种重要的复形，其中Čech 复形的定义基于所谓的神经，而神经作为一种重要的抽象单纯复形的例子，我们可能也会经常用到。
+\subsection{神经（Nerve）}
+\label{subsec:nerve}
+神经这一概念的最初的想法是通过拓扑空间的“好的开覆盖”来相对简单地刻画一个拓扑空间。
+\begin{definition}[神经]
+\label{def:nerve}
+给定一族集合 \(\mathcal{U} = \{U_\alpha\}_{\alpha \in A}\)，其\textbf{神经} \(N(\mathcal{U})\) 定义为一个抽象单纯复形：
+\begin{itemize}
+    \item 顶点集为索引集 \(A\)；
+    \item 子集 \(\{\alpha_0, \dots, \alpha_k\}\) 构成单纯形当且仅当 \(\bigcap_{i=0}^k U_{\alpha_i} \neq \emptyset\)。
+\end{itemize}
+\end{definition}
+
+\begin{theorem}[神经引理（Nerve Lemma）]
+\label{thm:nerve-lemma}
+若 \(\mathcal{U}\) 是拓扑空间 \(X\) 的\textbf{好覆盖（good cover）}（即\(\mathcal{U}\)是一个开覆盖并且所有非空交集都可缩），则 \(X\) 与 \(N(\mathcal{U})\) 的几何实现的底空间同伦等价。
+\end{theorem}
+
+\subsection{Čech 复形}
+\label{subsec:cech-complex}
+
+\begin{definition}[Čech 复形]
+\label{def:cech-complex}
+设 \(P\) 是度量空间 \((M,d)\) 中的有限点集。对于半径 \(r>0\)，定义 Čech 复形为半径 \(r\) 闭球族 \(\{B(p,r)\}_{p\in P}\) 的神经：
+\[
+\check{C}^r(P) = N(\{B(p,r)\}_{p\in P}).
+\]
+\end{definition}
+
+事实上，后面会知道，这里的Čech 复形让r变动的话，可以通过到$P$的距离函数这个实值函数诱导一个滤过（可以先理解为以半径r或者时间为参数的一族嵌套的复形）。
+
+\subsection{Vietoris-Rips 复形}
+\label{subsec:rips-complex}
+
+\begin{definition}[Vietoris-Rips 复形]
+\label{def:rips-complex}
+设 \((P,d)\) 为有限度量空间。对于 \(r>0\)，Vietoris-Rips 复形 \(\operatorname{VR}^r(P)\) 定义为：子集 \(\sigma \subseteq P\) 构成单纯形当且仅当 \(\sigma\) 中任意两点的距离 \(\le 2r\)。
+\end{definition}
+实际上，Vietoris-Rips 复形也有其对应的滤过，但是这个滤过不是由拓扑空间上的某个实值函数诱导的。
+
+\begin{remark}
+\begin{enumerate}
+    \item Rips 复形的结构完全由它的 1-骨架（图）决定（如果一个单纯形的所有1维面都在Rips复形中，那么这个单纯形本身也在Rips复形中）。
+    \item Čech 复形基于度量球的空间相交信息，Rips 复形仅基于 pairwise 距离。
+    \item 两者关系紧密，见下方命题。
+\end{enumerate}
+\end{remark}
+
+\begin{proposition}
+\label{prop:cech-rips-interleaving}
+对于有限点集 \(P \subset (M,d)\)，以下包含关系成立：
+\[
+\check{C}^r(P) \subseteq \operatorname{VR}^r(P) \subseteq \check{C}^{2r}(P).
+\]
+\end{proposition}
+
+\begin{fact}[Čech 复形与 Rips 复形的 1-骨架重合条件]
+\label{fact:cech-rips-1skeleton}
+设 \(P\) 是度量空间 \((M,d)\) 的有限子集。若 \(M\) 满足如下“球相交”性质：
+\[
+\forall r>0,\ \forall p,q \in M,\quad d(p,q) \le 2r \implies B(p,r) \cap B(q,r) \neq \emptyset,
+\]
+则 \(\operatorname{VR}^r(P)\) 与 \(\check{C}^r(P)\) 的 1-骨架（即顶点和边的集合）完全相同。
+\end{fact}
+
+\begin{remark}
+这个“球相交”性质在欧氏空间中总是成立的，但是在一般的度量空间中不一定，例如考虑离散空间中，任意不同两点之间的距离都定义为1.
+\end{remark}
+
+\section{稀疏复形（Sparse Complexes）}
+\label{sec:sparse-complexes}
+
+为降低计算复杂度（特别是高维数据），引入更稀疏的复形。
+\\
+TBD
+
+\section{链、闭链与边界（Chains, Cycles, Boundaries）}
+\label{sec:chains-cycles-boundaries}
+
+设 \(K\) 为单纯复形。记 \(C_p(K)\) 为以所有 \(p\)-单纯形为基底的自由R模（如前所述，R通常取为$\mathbb{Z}_{2}$，有时也会用到$\mathbb{Z}$和$\mathbb{Q}$），其元素称为 \(p\)-链。
+
+\begin{definition}[边界算子]
+\label{def:boundary-operator}
+对于 \(p\)-单纯形 \(\sigma = [v_0, \dots, v_p]\)，定义边界算子 \(\partial_p\) 为：
+\[
+\partial_p \sigma = \sum_{i=0}^p (-1)^{i}[v_0, \dots, \hat{v}_i, \dots, v_p],
+\]
+并线性延拓至整个链空间。（在$\mathbb{Z}_{2}$系数下符号消失）
+\end{definition}
+
+\begin{proposition}[关键性质:同调结构的基础]
+\label{prop:boundary-square-zero}
+\(\partial_{p-1} \circ \partial_p = 0\)，即“边界的边界为空”，也即所有p-维链群构成一个链复形。
+\end{proposition}
+
+由此定义：
+\begin{align*}
+    Z_p &= \ker \partial_p && \text{（\(p\)-闭链 / \(p\)-cycles）}, \\
+    B_p &= \operatorname{im} \partial_{p+1} && \text{（\(p\)-边界 / \(p\)-boundaries）}.
+\end{align*}
+
+由于 \(B_p \subseteq Z_p\)，可定义商空间：
+\[
+H_p(K) = Z_p / B_p,
+\]
+称为 \(p\)-维同调群。\\
+这里称为同调群实际上是历史原因而非说是同调群总是一个群（尽管有的情况下的确是一个abel群），事实上，同调群一般是一个模。
+
+\section{同调群（Homology Groups）}
+\label{sec:homology-groups}
+
+\subsection{基本定义}
+\label{subsec:homology-basics}
+
+\begin{definition}[同调群与贝蒂数]
+\label{def:betti-number}
+\(H_p(K)\) 是 \(p\)-维同调群，其(自由部分的)秩称为第 \(p\) 个贝蒂数 \(\beta_p\)：
+\[
+\beta_p = \operatorname{rank} H_p(K),
+\],在域系数下简化为：
+\[
+\beta_p = \dim H_p(K) = \dim Z_p - \dim B_p.
+\]
+\end{definition}
+
+\begin{fact}[几何意义]
+\label{fact:betti-geometric}
+\begin{itemize}
+    \item \(\beta_0\)：连通分量个数；
+    \item \(\beta_1\)：独立环（洞）的个数；
+    \item \(\beta_2\)：独立空腔（voids）的个数。
+\end{itemize}
+\end{fact}
+
+\subsection{链映射与同调群的同态}
+\label{subsec:chain-map}
+
+\begin{definition}[链映射]
+\label{def:chain-map}
+单纯映射 \(f: K_1 \to K_2\) 通过线性延拓诱导链映射 \(f_\#: C_p(K_1) \to C_p(K_2)\)。
+\end{definition}
+
+链映射将闭链映到闭链，边界映到边界，因此可诱导同调群之间的R模同态（这里省略了若干良定性验证）
+\[
+f_*: H_p(K_1) \to H_p(K_2).
+\]
+
+\begin{fact}
+\label{fact:contiguous-induced}
+邻接的单纯映射诱导相同的同调群映射。
+\end{fact}
+
+\subsection{相对同调与锥化复形}
+\label{subsec:relative-homology}
+
+设 \(L \subset K\) 为子复形。定义相对链群：
+\[
+C_p(K, L) = C_p(K) / C_p(L).
+\]
+边界算子 \(\partial\) 可自然地诱导到商空间上（因为 \(\partial(C_p(L)) \subseteq C_{p-1}(L)\)）。由此定义相对同调群 \(H_p(K, L)\)。
+
+\begin{definition}[锥化复形]
+\label{def:coned-complex}
+设 \(K\) 为单纯复形，\(K_0 \subseteq K\) 为子复形。关于配对 \((K, K_0)\) 的\textbf{锥化复形（coned complex）} \(K^*\) 定义如下：
+\begin{itemize}
+    \item \(K^*\) 包含 \(K\) 中的所有单纯形；
+    \item 添加一个新顶点 \(x \notin V(K)\)，对于 \(K_0\) 中的每一个单纯形 \(\sigma \in K_0\)，将锥形单纯形 \(\sigma \cup \{x\}\) 加入 \(K^*\)。
+\end{itemize}
+\end{definition}
+
+\begin{remark}
+直观上，锥化复形 \(K^*\) 是在原复形 \(K\) 的基础上，用一个新顶点 \(x\) 向子复形 \(K_0\) 的所有单纯形作“锥”（cone），从而将 \(K_0\) 锥化为一个可缩的子复形。这一构造在相对同调与普通同调之间建立了联系：
+\end{remark}
+
+\begin{fact}[锥化复形]
+\label{fact:coned-complex}
+相对同调 \(H_p(K, L)\) 同构于关于配对 \((K, L)\) 的锥化复形 \(K^*\) 的普通同调群：
+\[
+H_p(K, L) \cong H_p(K^*), \quad (p>0),
+\]
+且 \(\beta_0(H_0(K, L)) = \beta_0(H_0(K^*)) - 1\)。
+这提供了相对同调的直观几何理解。
+\end{fact}
+
+\subsection{奇异同调}
+\label{subsec:singular-homology}
+
+对于一般拓扑空间 \(X\)，使用从标准单纯形 \(\Delta^p\) 到 \(X\) 的连续映射（奇异单纯形）来定义链群，同样可构造同调群（奇异同调）。这种定义最为一般，可以对任意拓扑空间定义同调。奇异同调的定义虽然普适，但因其链群无限维，直接计算极其困难。计算方法通常是通过三角剖分转化为单纯同调，或通过胞腔剖分转化为胞腔同调。
+
+\begin{theorem}[等价性]
+\label{thm:singular-simplicial-equivalence}
+若 \(X\) 被复形 \(K\) 三角剖分，则奇异同调群与单纯同调群同构：
+\[
+H_p^{\text{sing}}(X) \cong H_p(K), \quad \forall p \ge 0.
+\]
+\end{theorem}
+
+\subsection{上同调（Cohomology）}
+\label{subsec:cohomology}
+
+上同调是同调的对偶。给定链复形 \((C_\bullet, \partial)\)，其对偶上链复形为：
+\[
+C^p = \operatorname{Hom}(C_p, R),
+\]
+上边缘算子 \(\delta\) 定义为 \((\delta \phi)(c) = \phi(\partial c)\)。由此定义上同调群：
+\[
+H^p(K) = \ker \delta^p / \operatorname{im} \delta^{p-1}.
+\]
+
+\begin{remark}
+在域系数下，\(H^p(K)\) 同构于 \(H_p(K)\) 的对偶空间。上同调在计算持续同调时有时能提高算法效率。
+\end{remark}
+
+\section*{第二章 本章总结}
+\addcontentsline{toc}{section}{第二章 本章总结}
+\begin{itemize}
+    \item 单纯复形是离散化拓扑空间的桥梁。Čech 和 Rips 复形是点云数据中最常用的两种构造。
+    \item 同调群作为自由abel群或向量空间，提供了量化拓扑特征的代数框架。
+    \item 相对同调、奇异同调和上同调作为扩展工具，在后续章节（如持续同调、对偶性）中发挥关键作用。
+    \item 为了脉络的清晰和连续性，我们暂时略过了稀疏复形中介绍的更多复形这一部分。
+\end{itemize}
+
+\newpage
+
+% ============================================================
+% 第三章
+% ============================================================
+
+\section*{第三章 章节概览}
+\addcontentsline{toc}{section}{第三章 章节概览}
+
+持续同调（Persistent Homology）是拓扑数据分析（TDA）最核心的工具。本章从滤过（Filtration）的基本概念出发，建立从拓扑空间到单纯复形的滤过理论，并引入持续性的核心概念——同调类的出生与死亡、持续贝蒂数、持续图与条形码。这些概念为后续的算法实现（第三章后半部分）和稳定性理论奠定基础。
+
+\section{滤过（Filtration）}
+\label{sec:filtration}
+
+\subsection{空间滤过（Space Filtration）}
+\label{subsec:space-filtration}
+
+设 \(X\) 为拓扑空间，\(f: X \to \mathbb{R}\) 为实值函数（在 TDA 中通常取连续函数，如距离函数）。对于 \(a \in \mathbb{R}\)，定义其\textbf{子水平集（sublevel set）}为：
+\[
+T_a \triangleq f^{-1}((-\infty, a]) \subseteq X.
+\]
+
+\begin{remark}
+子水平集是“函数值不超过 \(a\)”的所有点的集合。随着 \(a\) 增大，子水平集只会扩大，不会缩小。
+\end{remark}
+
+显然有：\(a \leq b \implies T_a \subseteq T_b\)。
+
+取一列递增的实数值 \(a_1 \leq a_2 \leq \cdots \leq a_n \leq \cdots\)，并令 \(a_0 = -\infty\)，\(T_{a_0} = \emptyset\)，则得到一列嵌套的子空间：
+\[
+\emptyset = T_{a_0} \hookrightarrow T_{a_1} \hookrightarrow T_{a_2} \hookrightarrow \cdots \hookrightarrow T_{a_n} \hookrightarrow \cdots
+\]
+
+\begin{definition}[空间滤过]
+\label{def:space-filtration}
+上述嵌套序列称为拓扑空间 \(X\) 关于实值函数 \(f\) 的一个\textbf{空间滤过（Space Filtration）}。
+\end{definition}
+
+由奇异同调理论，上述嵌套序列诱导了同调群之间的同态序列：
+\[
+0 = H_p(T_{a_0}) \xrightarrow{g^{0,1}} H_p(T_{a_1}) \xrightarrow{g^{1,2}} H_p(T_{a_2}) \xrightarrow{g^{2,3}} \cdots \xrightarrow{} H_p(T_{a_n}) \xrightarrow{} \cdots
+\]
+其中 \(g^{i,j}\) 是由包含映射 \(T_{a_i} \hookrightarrow T_{a_j}\) 诱导的。
+
+\begin{remark}
+\(g^{i,j}\) 不一定是单同态，因为包含映射可能将不同的同调类合并。
+\end{remark}
+
+回忆第二章内容：\(H_p(T_{a_i}) \cong Z_p(T_{a_i}) / B_p(T_{a_i})\)，其中
+\[
+Z_p(T_{a_i}) = \ker \partial_p, \qquad B_p(T_{a_i}) = \operatorname{Im} \partial_{p+1}.
+\]
+
+\begin{definition}[同调模]
+\label{def:homology-module-sequence}
+上述序列
+\[
+0 = H_p(T_{a_0}) \to H_p(T_{a_1}) \to H_p(T_{a_2}) \to \cdots
+\]
+称为由 \((X, f)\) 诱导的\textbf{同调模（Homology Module）}。
+\end{definition}
+\begin{remark}
+之所以称为同调模，这是因为可以将整个序列中的同调群作直和，并且把它看作一个$k[t]$-模，k是这些同调群的系数域，t是多项式环的变量，变量在这个同调模上的作用是把元素送到下一个时间尺度。这个分次$k[t]$-模可以和原来同调群的同态序列等同起来，故均称为同调模。后续我们会忘掉这个分次$k[t]$-模是通过取同调和嵌入诱导得到的，进一步把这个概念推广和抽象为所谓的“持续模”，从而系统的叙述其一些性质。
+\end{remark}
+
+\begin{example}[点云数据]
+\label{ex:point-cloud-filtration}
+设 \(P \subset M\) 为度量空间 \((M,d)\) 中的有限点集（称为\textbf{点云}）。取 \(f(x) = d(x, P)\)（即到点集 \(P\) 的距离函数），则自然诱导一个空间滤过，其子水平集为：
+\[
+T_a = \{x \in M \mid d(x, P) \le a\} = \bigcup_{p \in P} B(p, a).
+\]
+这就是“半径 \(a\) 的球的并集”随 \(a\) 增大的过程。这正是第二章中 Čech 复形所建模的对象。
+\end{example}
+
+\subsection{单纯滤过（Simplicial Filtration）}
+\label{subsec:simplicial-filtration}
+
+实际计算中，我们通常用单纯复形 \(K\) 三角剖分拓扑空间 \(X\)，从而用\textbf{单纯同调}代替\textbf{奇异同调}。三角剖分使我们可以在计算机上对有限的数据结构进行运算。
+
+\begin{definition}[单纯滤过（Simplicial Filtration）]
+\label{def:simplicial-filtration}
+设 \(K\) 为单纯复形。一个\textbf{单纯滤过}是一列嵌套的子复形：
+\[
+\emptyset = K_0 \subseteq K_1 \subseteq K_2 \subseteq \cdots \subseteq K_n \subseteq \cdots \subseteq K,
+\]
+称一个单纯滤过为\textbf{逐单形的（simplex-wise）}，若其中 \(K_{i+1} \setminus K_i\) 为单个单纯形 \(\sigma_i \in K\)。
+\end{definition}
+
+\begin{remark}
+“逐单形的”意味着每一步只添加一个单纯形。实际上，任何滤过都可以通过适当展开（把一次添加多个单纯形的步骤拆成多次）变为逐单形滤过。
+\end{remark}
+
+一个自然的问题是：单纯滤过能不能像空间滤过那样由一个实值函数诱导？由于单纯复形在面关系下封闭，我们先要考虑所谓的逐单形单调函数。
+
+\begin{definition}[逐单形单调函数]
+\label{def:simplex-wise-monotone}
+称 \(f: K \to \mathbb{R}\) 为\textbf{逐单形单调（simplex-wise monotone）}的，若：
+\[
+\sigma' \subseteq \sigma \implies f(\sigma') \le f(\sigma).
+\]
+此时对任意 \(a \in \mathbb{R}\)，子水平集 \(f^{-1}((-\infty, a])\) 是 \(K\) 的一个子复形。
+\end{definition}
+
+\begin{remark}
+逐单形单调性保证：如果一个单纯形属于子水平集，那么它的所有面也都属于子水平集。这正是子复形所需要的向下封闭性。
+\end{remark}
+
+\subsection{由顶点函数诱导单纯滤过}
+\label{subsec:vertex-filtration}
+
+\begin{question}
+一个定义在顶点集 \(V(K)\)（或底空间 \(|K|\)）上的函数是否可以诱导一个单纯滤过？反过来，任意单纯滤过是否一定可由某个顶点函数诱导？
+\end{question}
+
+设 \(V(K) = \{v_1, \dots, v_n\}\)，\(f: V(K) \to \mathbb{R}\) 为\textbf{顶点函数（Vertex Function）}。注意顶点函数和实数直线的全序关系自然地诱导了顶点集上的一个全序关系。
+
+回忆之前第二章介绍的星、闭星和链环等子复形的概念，下面我们基于顶点函数给出下星、闭下星、下链环的概念。注意与之前不同的是，这些概念是对于单个顶点定义的，并且依赖于一个顶点函数。我们会在之后“PL-函数的持续同调”部分再次用到这些概念。
+
+\begin{definition}[下星、闭下星与下链环]
+\label{def:lower-star}
+对顶点 \(v \in V(K)\)，定义：
+\begin{align*}
+\operatorname{Lst}(v) &\triangleq \{\sigma \in \operatorname{St}(v) \mid \forall u \in \sigma,\ f(u) \le f(v)\}, \\
+\overline{\operatorname{Lst}}(v) &\triangleq \{\tau \in K \mid \tau \subseteq \sigma \text{ 对于某个 } \sigma \in \operatorname{Lst}(v)\}, \\
+\operatorname{Llk}(v) &\triangleq \{\tau \in \overline{\operatorname{Lst}}(v) \mid v \notin \tau\}.
+\end{align*}
+\end{definition}
+
+\begin{definition}[顶点函数诱导的逐单形单调函数]
+\label{def:induced-monotone}
+给定顶点函数 \(f: V(K) \to \mathbb{R}\)，定义 \(\tilde{f}: K \to \mathbb{R}\) 为：
+\[
+\tilde{f}(\sigma) \triangleq \max_{v \in \sigma} f(v).
+\]
+\end{definition}
+
+\begin{proposition}
+\label{prop:induced-monotone}
+\(\tilde{f}\) 是逐单形单调的。
+\end{proposition}
+
+\begin{definition}[PL函数（分片线性函数）]
+\label{def:pl-function}
+顶点函数 \(f: V(K) \to \mathbb{R}\) 可通过\textbf{重心坐标}线性延拓至整个底空间 \(|K|\)：
+\[
+\bar{f}\left(\sum_{i=1}^n \alpha_i v_i\right) = \sum_{i=1}^n \alpha_i f(v_i),
+\]
+其中 \(\sum_i \alpha_i = 1, \alpha_i \ge 0\)。得到的 \(\bar{f}: |K| \to \mathbb{R}\) 称为\textbf{分段线性函数（PL函数）}。
+\end{definition}
+
+\begin{remark}
+由此建立对应关系：
+\[
+\bar{f}: |K| \to \mathbb{R} \quad \longleftrightarrow \quad f: V(K) \to \mathbb{R}.
+\]
+注意 \(f = \bar{f}|_{V(K)}\) 是 \(\bar{f}\) 在顶点集上的限制。
+\end{remark}
+
+\begin{definition}[由顶点函数诱导的子复形]
+\label{def:vertex-sublevel}
+对 \(a \in \mathbb{R}\)，定义：
+\[
+K_{f(a)} \triangleq \{\sigma \in K \mid \forall v \in \sigma,\ f(v) \le a\}.
+\]
+等价地（由 \(\tilde{f}\) 的定义）：
+\[
+K_{f(a)} = \tilde{f}^{-1}((-\infty, a]) = \{\sigma \in K \mid \max_{v\in\sigma} f(v) \le a\}.
+\]
+这两种定义显然等价。
+\end{definition}
+
+于是，由顶点函数 \(f: V(K) \to \mathbb{R}\) 可诱导一个单纯滤过：
+\[
+\emptyset = K_{f(a_0)} \hookrightarrow K_{f(a_1)} \hookrightarrow K_{f(a_2)} \hookrightarrow \cdots \hookrightarrow K_{f(a_n)} \hookrightarrow \cdots \hookrightarrow K.
+\]
+
+\begin{remark}
+注意 \(K_{f(a_i)} \setminus K_{f(a_{i-1})} = \operatorname{Lst}(v_i)\)，即每次添加的是顶点 \(v_i\) 的下星中的所有单纯形。
+\end{remark}
+
+\subsection{过滤函数（Filtration Function）}
+\label{subsec:filtration-function}
+
+反过来，任意一个单纯滤过：
+\[
+\emptyset = K_0 \hookrightarrow K_1 \hookrightarrow \cdots \hookrightarrow K_n = K
+\]
+也可以诱导一个逐单形单调函数 \(\tilde{f}: K \to \mathbb{R}\)：
+\[
+\tilde{f}(\sigma) \triangleq \min\{i \mid \sigma \in K_i\}.
+\]
+这个函数称为该滤过的\textbf{过滤函数（Filtration Function）}。
+
+\begin{remark}
+\begin{itemize}
+    \item 逐单形单调函数和单纯滤过是一一对应的。
+    \item 由顶点函数诱导的滤过只是单纯滤过的一个子类，本质在于并不是每一个逐单形单调函数都可以由某个顶点函数诱导。
+	\item 顶点函数和PL函数是一一对应的。
+    \item 若单纯形在滤过中的顺序与顶点函数值相容（即 \(\sigma \in \operatorname{Lst}(v)\) 且所有顶点均不超过 \(v\)），则可由顶点函数诱导。
+\end{itemize}
+\end{remark}
+
+\section{持续同调（Persistence Homology）}
+\label{sec:persistence-homology}
+
+本节将建立拓扑数据分析（TDA）中最核心的概念——持续同调（Persistent Homology）。下述同调群都考虑域系数。
+
+\subsection{持续同调群与持续贝蒂数}
+\label{subsec:persistent-homology-basics}
+
+\begin{definition}[同调模]
+\label{def:homology-module-sequence-pers}
+设 \(X\) 为拓扑空间（或单纯复形），
+\[
+\emptyset = X_0 \hookrightarrow X_1 \hookrightarrow \cdots \hookrightarrow X_i \hookrightarrow \cdots \hookrightarrow X_n = X
+\]
+为一个空间滤过（filtration）。由包含映射诱导的同调群同态构成以下同调模：
+\[
+H_p^f: 0 = H_p(X_0) \to H_p(X_1) \to \cdots \to H_p(X_i) ...\xrightarrow{f^{i,j}}... H_p(X_j) \to \cdots \to H_p(X_n) = H_p(X),
+\]
+其中 \(f^{i,j}\) 是由包含映射 \(X_i \hookrightarrow X_j\) 诱导的同调群的同态。
+\end{definition}
+
+\begin{definition}[持续同调群]
+\label{def:persistent-homology-group}
+\textbf{第 \(p\) 维持续同调群（Persistent Homology Group）} \(H_p^{i,j}\) 定义为同态 \(f^{i,j}\) 的像：
+\[
+H_p^{i,j} \triangleq \operatorname{Im}\big(f^{i,j}: H_p(X_i) \to H_p(X_j)\big).
+\]
+它包含了所有在尺度 \(i\) 时已存在、且在尺度 \(j\) 时仍然存活的同调类。
+\end{definition}
+
+\begin{definition}[持续贝蒂数]
+\label{def:persistent-betti}
+第 \(p\) 维\textbf{持续贝蒂数（Persistent Betti Number）}定义为持续同调群的维数：
+\[
+\beta_p^{i,j} \triangleq \dim H_p^{i,j}.
+\]
+\end{definition}
+
+\begin{remark}
+持续贝蒂数 \(\beta_p^{i,j}\) 度量了“在滤过中从尺度 \(i\) 到尺度 \(j\) 的过程中，有多少个 \(p\)-维同调类存活下来”。
+\end{remark}
+
+\subsection{持续同调群的等价刻画}
+\label{subsec:persistent-homology-characterization}
+
+下面的事实有助于理解持续同调群的构造：
+
+\begin{fact}[同调群的像与闭链/边界的关系]
+\label{fact:persistent-image}
+\[
+H_p^{i,j} \cong Z_p(X_i) / \big(Z_p(X_i) \cap B_p(X_j)\big).
+\]
+\end{fact}
+
+\begin{remark}
+由于 \(X_i \subseteq X_j\)，有 \(Z_p(X_i) \subseteq Z_p(X_j)\)和\(B_p(X_i) \subseteq B_p(X_j)\)。该事实说明：一个在 \(X_i\) 中的闭链，若其在 \(X_j\) 中成为边界（即被“填满”），则在持续同调群中被视为零。这正是“死亡”概念的代数本质。
+\end{remark}
+
+\subsection{出生与死亡（Birth and Death）}
+\label{subsec:birth-death}
+
+\begin{definition}[出生]
+\label{def:birth}
+一个非零的同调类 \(\zeta \in H_p(X_a)\) 被称为在 \(X_i\) 中\textbf{出生（born）}（\(i \le a\)），若：
+\[
+\zeta \in H_p^{i,a} \quad \text{但} \quad \zeta \notin H_p^{i-1,a}.
+\]
+换言之，\(\zeta\) 在尺度 \(i\) 之前不存在，直到尺度 \(i\) 才首次出现。
+\end{definition}
+
+\begin{definition}[死亡]
+\label{def:death}
+一个非零的同调类 \(\zeta \in H_p(X_a)\) 被称为在 \(X_j\) 中\textbf{死亡（dies）}（\(a < j\)），若：
+\[
+f^{a,j-1}(\zeta) \neq 0 \quad \text{但} \quad f^{a,j}(\zeta) = 0.
+\]
+换言之，\(\zeta\) 在尺度 \(j-1\) 时仍然存活，但在尺度 \(j\) 时成为边界（被“填满”）。
+\end{definition}
+
+\begin{remark}
+出生与死亡是持续同调的核心概念。一个同调类的\textbf{寿命（lifetime）}定义为 \(\operatorname{pers}(\zeta) = \text{死亡时间} - \text{出生时间}\)。长寿命的特征被认为是“真实”的拓扑结构，而短寿命的特征则被视为“噪声”。
+\end{remark}
+
+\subsection{死亡时的合并规则}
+\label{subsec:merging-rule}
+
+当一个同调类死亡时，通常涉及多个类的合并。下面的事实描述了这种合并的规则（即“最年轻优先”配对原则）：
+
+\begin{fact}[死亡时的配对规则]
+\label{fact:youngest-first}
+设 \([c] \in H_p(X_{j-1})\) 是一个在进入 \(X_j\) 时死亡的 \(p\)-维同调类。
+则 \([c]\) 在 \(X_i\) 中出生，当且仅当存在一个索引序列
+\[
+i_1 \le i_2 \le \cdots \le i_k = i \quad (k \ge 1),
+\]
+使得以下两条同时成立：
+\begin{enumerate}
+    \item 对每个 \(\ell = 1,\dots,k\)，\(0 \neq [c_{i_\ell}] \in H_p(X_{j-1})\) 在 \(X_{i_\ell}\) 中出生；
+    \item \([c] = [c_{i_1}] + [c_{i_2}] + \cdots + [c_{i_k}]\)。
+\end{enumerate}
+\end{fact}
+
+\begin{remark}
+直观上，当多个同调类合并成一个时，只有\textbf{最晚出生}的那个类被认为是“死亡”的，其余类则“存活”下来并继承合并后的类。这就是“最年轻优先（Youngest First）”配对原则。\\
+注意，上述事实不是平凡的，实际上这个事实是通过把持续同调模看成一个分次$k[t]$-模来使用有限生成PID模结构定理来得到的，这里k是同调群的系数域，t是多项式环的变量，t在这个分次模上的作用就是通过滤过嵌入诱导的同调映射把元素映到下一个时间尺度（也就是这个分次模的下一个次数）上。这是一个有限生成的$k[t]$-模。\\
+\end{remark}
+
+\section{持续图（Persistence Diagram）}
+\label{sec:persistence-diagram}
+
+\subsection{持续配对函数}
+\label{subsec:pairing-function}
+
+为了将同调类的出生与死亡配对关系进行量化，我们引入持续配对函数 \(\mu_p^{i,j}\)，它记录了在 \(X_i\) 出生、在进入 \(X_j\) 时死亡的独立类的数量。
+
+\begin{definition}[持续配对函数]
+\label{def:pairing-function}
+对于 \(0 < i < j \le n+1\)，定义
+\[
+\mu_p^{i,j} \triangleq \left(\beta_p^{i,j-1} - \beta_p^{i,j}\right) - \left(\beta_p^{i-1,j-1} - \beta_p^{i-1,j}\right),
+\]
+其中当 \(j = n+1\) 时，\(\beta_p^{i,n+1} = \beta_p^{i,\infty} = 0\)。
+\end{definition}
+
+\begin{remark}[二阶差分的含义].\\
+\begin{itemize}
+    \item 第一项 \(\beta_p^{i,j-1} - \beta_p^{i,j}\) 统计的是在 \(X_i\) 或之前出生、且在进入 \(X_j\) 时死亡的类的数量。
+    \item 第二项 \(\beta_p^{i-1,j-1} - \beta_p^{i-1,j}\) 统计的是在 \(X_{i-1}\) 或之前出生、且在进入 \(X_j\) 时死亡的类的数量。
+    \item 两者相减，剩下的正好是\textbf{在 \(X_i\) 出生、在进入 \(X_j\) 时死亡}的类的数量。
+\end{itemize}
+\end{remark}
+
+\begin{remark}[有限秩假设]
+若允许在同一点同时创建或销毁多个同调类，可能导致有限滤过产生无限多个出生-死亡对。为避免此类病态情况，我们总假设同调模中的线性映射具有\textbf{有限秩}。
+\end{remark}
+
+\subsection{类持续值与持续图}
+\label{subsec:persistence-diagram-def}
+
+\begin{definition}[类持续值]
+\label{def:class-persistence}
+若 \(\mu_p^{i,j} \neq 0\)，一个在 \(X_i\) 出生、在 \(X_j\) 死亡的类 \([c]\) 的\textbf{持续值}定义为
+\[
+\operatorname{Pers}([c]) = a_j - a_i.
+\]
+当 \(j = n+1 = \infty\) 时，\(\operatorname{Pers}([c]) = \infty\)。
+\end{definition}
+
+\begin{definition}[持续图]
+\label{def:persistence-diagram}
+由函数 \(f\) 诱导的滤过 \(\mathcal{F}_f\) 的\textbf{持续图} \(\operatorname{Dgm}_p(\mathcal{F}_f)\) 是在扩展平面
+\[
+\bar{\mathbb{R}}^2 \triangleq (\mathbb{R} \cup \{\pm\infty\})^2
+\]
+上，对每一对 \(i < j\) 且 \(\mu_p^{i,j} \neq 0\)，画出点 \((a_i, a_j)\)，其重数为 \(\mu_p^{i,j}\)。此外，对角线
+\[
+\Delta \triangleq \{(x, x) \mid x \in \bar{\mathbb{R}}\}
+\]
+上的所有点均被加入，重数均为无穷大。
+\end{definition}
+
+\begin{definition}[本性点与本性类]
+\label{def:essential}
+在 \(a_i\) 出生且永不死亡的类，表示为 \((a_i, a_{n+1}) = (a_i, \infty)\)，称为\textbf{本性持续点（essential persistent point）}，其对应的同调类称为\textbf{本性同调类（essential homology class）}。
+\end{definition}
+
+\begin{remark}[对角线的技术作用]
+对角线的引入表面上看起来是“填充”，其本质是为了后续定义持续图之间的\textbf{瓶颈距离（Bottleneck Distance）}。由于不同持续图的非对角线点数量可能不同，对角线上无穷重数的点允许我们在两个图之间建立双射时，将“多余”的点匹配到对角线上（即视为零持续值的噪声）。
+\end{remark}
+
+\begin{fact}[持续图的几何性质]
+\label{fact:pd-geometric}
+\begin{enumerate}
+    \item 若一个类的持续值为 \(s\)，则其在持续图中对应的点距离对角线 \(\Delta\) 的欧氏距离为 \(s/\sqrt{2}\)。
+    \item 对子水平集滤过，所有点 \((a_i, a_j)\) 满足 \(a_i \le a_j\)，即位于对角线上方。
+    \item 若 \(m_i\) 表示本性点 \((a_i, \infty)\) 在 \(\operatorname{Dgm}_p(\mathcal{F})\) 中的重数，其中 \(\mathcal{F}\) 是 \(X = X_n\) 的一个滤过，则
+    \[
+    \sum_i m_i = \dim H_p(X) = \beta_p(X),
+    \]
+    即本性点的总数（计重数）等于 \(X\) 的第 \(p\) 个贝蒂数。
+\end{enumerate}
+\end{fact}
+
+\subsection{持续贝蒂数与持续图的关系}
+\label{subsec:pd-betti-relation}
+
+\begin{theorem}
+\label{thm:pd-betti}
+对于任意指标 \(0 \le k \le \ell \le n\) 及任意 \(p\)，第 \(p\) 维持续贝蒂数满足
+\[
+\beta_p^{k,\ell} = \sum_{i \le k} \sum_{j > \ell} \mu_p^{i,j}.
+\]
+\end{theorem}
+
+\begin{remark}[象限解释]
+\(\beta_p^{k,\ell}\) 等于位于点 \((a_k, a_\ell)\) 的\textbf{左上象限}中的持续点数量。一个在 \(X_i\) 出生、在 \(X_j\) 死亡的类被计入当且仅当 \(i \le k\) 且 \(j > \ell\)。因此该象限是\textbf{右闭、下开}的。
+\end{remark}
+
+\subsection{持续图的稳定性}
+\label{subsec:stability}
+
+实际测量中，诱导滤过的函数 \(f\) 往往包含噪声，因此我们需要确保 \(f\) 的微小扰动不会引起持续图的剧烈变化。为此，首先需要在持续图的空间上定义距离。
+
+\begin{definition}[瓶颈距离]
+\label{def:bottleneck-distance}
+设 \(\operatorname{Dgm}_p(\mathcal{F}_f)\) 和 \(\operatorname{Dgm}_p(\mathcal{F}_g)\) 是两个持续图，\(\Pi\) 为两个图之间所有双射 \(\pi\) 的集合（将对角线加入PD中，保证了$\Pi$不是空集）。对两点 \(x=(x_1,x_2)\) 和 \(y=(y_1,y_2)\)，定义 \(L_\infty\)-范数
+\[
+\|x - y\|_\infty = \max\{|x_1 - y_1|, |x_2 - y_2|\},
+\]
+并约定 \(\infty - \infty = 0\)。两个图之间的\textbf{瓶颈距离(Bottleneck Distance)}（有时简称B-距离）为
+\[
+d_b(\operatorname{Dgm}_p(\mathcal{F}_f), \operatorname{Dgm}_p(\mathcal{F}_g))
+= \inf_{\pi \in \Pi} \sup_{x \in \operatorname{Dgm}_p(\mathcal{F}_f)} \|x - \pi(x)\|_\infty.
+\]
+\end{definition}
+
+\begin{theorem}
+\label{thm:bottleneck-metric}
+所有持续图在瓶颈距离 \(d_b\) 下构成一个\textbf{度量空间}。
+\end{theorem}
+
+\begin{remark}
+若将 \(d_b\) 直接定义在同调模 \(H_p\mathcal{F}\) 上，则它可能退化为伪度量——因为两个仅相差零持续值类的模可能具有相同的持续图（即瓶颈距离为 0）。
+\end{remark}
+
+
+对于函数之间的距离，采用\textbf{上确界度量}：
+\[
+\|f - g\|_\infty = \sup_{x \in X} |f(x) - g(x)|.
+\]
+
+\begin{theorem}[单纯滤过稳定性]
+\label{thm:simplicial-stability}
+设 \(f, g: K \to \mathbb{R}\) 是两个逐单形单调函数，诱导单纯滤过 \(\mathcal{F}_f\) 和 \(\mathcal{F}_g\)。则对任意 \(p \ge 0\)，
+\[
+d_b(\operatorname{Dgm}_p(\mathcal{F}_f), \operatorname{Dgm}_p(\mathcal{F}_g)) \le \|f - g\|_\infty.
+\]
+\end{theorem}
+也就是说，如果把逐单形单调函数到PD的对应，看成两个度量空间之间的映射，那么这个映射是Lipschitz连续的。
+
+\begin{theorem}[空间滤过稳定性]
+\label{thm:space-stability}
+设 \(X\) 为可三角剖分空间，\(f, g: X \to \mathbb{R}\) 是两个可驯（tame）函数，诱导空间滤过 \(\mathcal{F}_f\) 和 \(\mathcal{F}_g\)。则对任意 \(p \ge 0\)，
+\[
+d_b(\operatorname{Dgm}_p(\mathcal{F}_f), \operatorname{Dgm}_p(\mathcal{F}_g)) \le \|f - g\|_\infty.
+\]
+\end{theorem}
+
+瓶颈距离关注的是“最大”匹配误差，而 Wasserstein 距离关注的是所有点匹配误差的“总和”。
+
+\begin{definition}[Wasserstein 距离]
+\label{def:wasserstein-distance}
+对任意 \(p \ge 0\)，\(q \ge 1\)，\(q\)-Wasserstein 距离（有时简称q-W-距离）定义为
+\[
+d_{W,q}(\operatorname{Dgm}_p(\mathcal{F}_f), \operatorname{Dgm}_p(\mathcal{F}_g))
+= \inf_{\pi \in \Pi} \left[ \sum_{x \in \operatorname{Dgm}_p(\mathcal{F}_f)} \|x - \pi(x)\|_q^q \right]^{1/q}.
+\]
+\end{definition}
+
+Wasserstein 距离也具有稳定性，但存在两个强弱不同的版本。
+
+\begin{fact}[Wasserstein 距离稳定性——第一版（弱稳定性）]
+\label{fact:wasserstein-weak}
+设 \(f, g: X \to \mathbb{R}\) 是定义在可三角剖分紧致度量空间 \(X\) 上的两个 Lipschitz 函数。则存在常数 \(C\) 和 \(k\)（依赖于 \(X\) 以及 \(f,g\) 的 Lipschitz 常数），使得对任意 \(p \ge 0\) 和 \(q \ge k\)，
+\[
+d_{W,q}(\operatorname{Dgm}_p(\mathcal{F}_f), \operatorname{Dgm}_p(\mathcal{F}_g))
+\le C \cdot \|f - g\|_\infty^{1 - k/q}.
+\]
+\end{fact}
+
+\begin{remark}
+第一版的稳定性界是\textbf{非线性的}，且常数 \(C\) 和 \(k\) 的取值不够显式。这一结果后来被显著改进。
+\end{remark}
+
+\begin{theorem}[Wasserstein 距离稳定性——第二版（强稳定性）]
+\label{thm:wasserstein-strong}
+设 \(f, g: K \to \mathbb{R}\) 是单纯复形 \(K\) 上的两个逐单形单调函数。则对任意 \(p \ge 0\) 和 \(q \ge 1\)，
+\[
+d_{W,q}(\operatorname{Dgm}_p(\mathcal{F}_f), \operatorname{Dgm}_p(\mathcal{F}_g))
+\le \|f - g\|_q,
+\]
+其中
+\[
+\|f - g\|_q = \left( \sum_{x \in X} |f(x) - g(x)|^q \right)^{1/q}.
+\]
+\end{theorem}
+
+\begin{remark}
+第二版稳定性将 Wasserstein 距离的稳定性纳入一个更自然、更紧的框架：误差直接受控于函数的 \(L^q\) 范数，而非 \(L^\infty\) 范数的幂次。这体现了 Wasserstein 距离对函数值“总量”而非“峰值”的敏感性。
+\end{remark}
+
+\section{持续模（Persistence Modules）}
+\label{sec:persistence-modules}
+
+\subsection{从同调模到持续模}
+\label{subsec:pm-intro}
+
+在 3.2.1 节中，我们已看到持续图相对于函数扰动具有稳定性。然而，该结论要求函数的定义域固定。一个自然的问题是：能否\textbf{直接在“模”的层面上}衡量两个滤过之间的扰动，从而导出持续图之间的距离？
+
+为此，我们将同调模（Homology Module）抽象为\textbf{持续模（Persistence Module）}。
+
+回忆：一个滤过 \(X_0 \hookrightarrow X_1 \hookrightarrow \cdots \hookrightarrow X_n\) 诱导了同调模
+\[
+H_p(X_0) \to H_p(X_1) \to \cdots \to H_p(X_n).
+\]
+当系数取域（如 \(\mathbb{Z}_2\)）时，同调群是向量空间，包含诱导的映射是线性映射。
+
+持续模将这一结构\textbf{推广}为任意向量空间与任意线性映射的族，并将索引集从有限子集扩展为 \(\mathbb{R}\) 的任意子偏序集。
+
+\begin{definition}[持续模]
+\label{def:persistence-module}
+设 \(A \subseteq \mathbb{R}\) 为线序集（序型继承自$\mathbb{R}$）。一个\textbf{持续模（Persistence Module）} \(\mathbb{V}\) 包含以下数据：
+\begin{itemize}
+    \item 对每个 \(a \in A\)，有唯一一个k-模 \(V_a\)；
+    \item 对每对 \(a \le a' \in A\)，有唯一一个k-线性映射 \(v_{a,a'}: V_a \to V_{a'}\)，
+\end{itemize}
+满足：
+\begin{enumerate}
+    \item \(v_{a,a} = \mathrm{id}_{V_a}\)（恒等映射）；
+    \item 对任意 \(a \le a' \le a''\)，\(v_{a,a''} = v_{a',a''} \circ v_{a,a'}\)（复合相容性）。
+\end{enumerate}
+记作
+\[
+\mathbb{V} = \left\{ V_a \xrightarrow{v_{a,a'}} V_{a'} \right\}_{a \le a'}.
+\]
+\end{definition}
+
+\begin{remark}
+从范畴论角度看，本质上，所谓持续模就是偏序集范畴$(A,\leq)$到$\textbf{Mod}_{k}$范畴(k是一个交换环或域)的一个共变函子，我们更多用的都是k为域的情况，此时$\textbf{Mod}_{k}$成为$\textbf{Vect}_{k}$.
+\end{remark}
+
+\begin{remark}
+同调模是持续模的特殊情形：\(V_a = H_p(X_a)\)，\(v_{a,a'}\) 为包含映射诱导的同调群同态。
+\end{remark}
+
+\begin{remark}[索引集的扩展]
+若持续模定义在 \(A \subset \mathbb{R}\) 上，则可将其扩展为定义在 \(\mathbb{R}\) 上的持续模：对任意 \(a < a' \in A\) 且 \((a,a') \cap A = \emptyset\)，假设 \(v_{b,b'}\) 在 \(b,b' \in (a,a')\) 上为同构，并令 \(\lim_{a \to -\infty} V_a = 0\)。
+\end{remark}
+
+\subsection{\(\varepsilon\)-交错与交错距离}
+\label{subsec:interleaving}
+
+\begin{definition}[\(\varepsilon\)-交错]
+\label{def:interleaving}
+设 \(\mathbb{U} = \{U_a \xrightarrow{u_{a,a'}} U_{a'}\}\) 和 \(\mathbb{V} = \{V_a \xrightarrow{v_{a,a'}} V_{a'}\}\) 是定义在 \(\mathbb{R}\) 上的两个持续模。称 \(\mathbb{U}\) 与 \(\mathbb{V}\) 是 \textbf{\(\varepsilon\)-交错（\(\varepsilon\)-interleaved）} 的，若存在两族线性映射
+\[
+\phi_a: U_a \to V_{a+\varepsilon}, \qquad \psi_a: V_a \to U_{a+\varepsilon}
+\]
+满足以下两个条件：
+
+\begin{enumerate}
+    \item \textbf{矩形交换性（Rectangular Commutativity）}：对任意 \(a \le a'\)，
+    \[
+    v_{a+\varepsilon, a'+\varepsilon} \circ \phi_a = \phi_{a'} \circ u_{a,a'}, \qquad
+    u_{a+\varepsilon, a'+\varepsilon} \circ \psi_a = \psi_{a'} \circ v_{a,a'}.
+    \]
+
+    \item \textbf{三角形交换性（Triangular Commutativity）}：对任意 \(a\)，
+    \[
+    \psi_{a+\varepsilon} \circ \phi_a = u_{a, a+2\varepsilon}, \qquad
+    \phi_{a+\varepsilon} \circ \psi_a = v_{a, a+2\varepsilon}.
+    \]
+\end{enumerate}
+\end{definition}
+
+\begin{remark}
+直观上，\(\varepsilon\)-交错意味着上述涉及的四种映射的整个图都是交换的。
+\end{remark}
+
+\begin{definition}[交错距离]
+\label{def:interleaving-distance}
+两个持续模 \(\mathbb{U}\) 与 \(\mathbb{V}\) 的\textbf{交错距离（Interleaving Distance）}定义为
+\[
+d_I(\mathbb{U}, \mathbb{V}) \triangleq \inf \{ \varepsilon \ge 0 \mid \mathbb{U} \text{ 与 } \mathbb{V} \text{ 是 } \varepsilon\text{-交错的} \}.
+\]
+若不存在任何有限的 \(\varepsilon\)，则 \(d_I(\mathbb{U}, \mathbb{V}) = \infty\)。
+\end{definition}
+
+\begin{remark}
+当 \(\varepsilon = 0\) 时，\(\phi_a: U_a \to V_a\) 与 \(\psi_a: V_a \to U_a\) 互为逆映射，即两个持续模\textbf{同构}。
+\end{remark}
+
+\begin{definition}[同构的持续模]
+\label{def:isomorphic-modules}
+两个持续模 \(\mathbb{U}\) 与 \(\mathbb{V}\)（定义在同一索引集 \(A\) 上）称为\textbf{同构（isomorphic）}的，若：
+\begin{enumerate}
+    \item 对每个 \(a \in A\)，存在同构 \(U_a \cong V_a\)；
+    \item 这些同构与模的内部映射 \(u_{a,a'}\) 和 \(v_{a,a'}\) 可交换。
+\end{enumerate}
+\end{definition}
+
+\begin{fact}
+\label{fact:isomorphic-pd}
+若两个由滤过 \(\mathcal{F}_f\) 和 \(\mathcal{F}_g\) 诱导的持续模同构，则其对应的持续图 \(\operatorname{Dgm}_p(\mathcal{F}_f)\) 与 \(\operatorname{Dgm}_p(\mathcal{F}_g)\) 完全相同。
+\end{fact}
+
+\label{subsec:filtration-interleaving}
+
+持续模的交错概念可自然推广到滤过本身。
+
+\begin{definition}[滤过的 \(\varepsilon\)-交错]
+\label{def:filtration-interleaving}
+设 \(\mathcal{X} = \{X_a\}_{a \in \mathbb{R}}\) 与 \(\mathcal{Y} = \{Y_a\}_{a \in \mathbb{R}}\) 为两个单纯滤过（或空间滤过），\(\iota_{a,a'}\) 表示包含映射。称 \(\mathcal{X}\) 与 \(\mathcal{Y}\) 是 \textbf{\(\varepsilon\)-交错}的，若存在两族单纯（或连续）映射
+\[
+\phi_a: X_a \to Y_{a+\varepsilon}, \qquad \psi_a: Y_a \to X_{a+\varepsilon}
+\]
+满足矩形交换性与三角形交换性（其中同态的“相等”在单纯映射情形下替换为“邻接”，在连续情形下替换为“同伦”）。
+\end{definition}
+
+\begin{proposition}
+\label{prop:filtration-interleaving}
+若两个滤过 \(\mathcal{X}\) 与 \(\mathcal{Y}\) 是 \(\varepsilon\)-交错的，则它们在同调层面诱导的持续模 \(H_p\mathcal{X}\) 与 \(H_p\mathcal{Y}\) 也是 \(\varepsilon\)-交错的。特别地，
+\[
+d_I(H_p\mathcal{X}, H_p\mathcal{Y}) \le d_I(\mathcal{X}, \mathcal{Y}).
+\]
+\end{proposition}
+
+\subsection{区间模与分解定理}
+\label{subsec:interval-module}
+
+为了建立持续模与持续图之间的精确对应，我们需要一类基本的持续模——\textbf{区间模（Interval Module）}。
+
+\begin{definition}[区间模]
+\label{def:interval-module}
+设 \(A \subseteq \mathbb{R}\)，\(b \le d \in A\)。区间模 \(\mathbb{I}\langle b, d \rangle\) 是如下定义的持续模：
+\[
+V_a = 
+\begin{cases}
+\mathbb{Z}_2, & a \in \langle b, d \rangle,\\
+0, & \text{否则},
+\end{cases}
+\]
+且 \(v_{a,a'}\) 在区间内为恒等映射，否则为零映射。区间的开闭类型有四种：\([b,d)\)、\((b,d]\)、\([b,d]\)、\((b,d)\)。
+
+一般地，我们用 \(\langle b,d \rangle\) 表示四种类型之一。
+\end{definition}
+
+\begin{remark}
+区间模是持续图中“一根条”的代数对应：\(b\) 为出生时间，\(d\) 为死亡时间。
+\end{remark}
+
+\begin{proposition}[区间分解定理]
+\label{prop:interval-decomposition}
+设 \(\mathbb{U}\) 为持续模。
+\begin{enumerate}
+    \item 若索引集有限，则 \(\mathbb{U}\) 可\textbf{唯一地}分解为闭-闭区间模的直和：
+    \[
+    \mathbb{U} \cong \bigoplus_{j \in J} \mathbb{I}[b_j, d_j].
+    \]
+    \item 若 \(\mathbb{U}\) 是\textbf{点态有限维（p.f.d.）}的（即每个 \(U_a\) 有限维），则 \(\mathbb{U}\) 可唯一地分解为区间模的直和：
+    \[
+    \mathbb{U} \cong \bigoplus_{j \in J} \mathbb{I}\langle b_j, d_j \rangle.
+    \]
+    \item 若 \(\mathbb{U}\) 是 \textbf{\(q\)-可驯（\(q\)-tame）} 的（即所有连接映射具有有限秩），则同样可唯一地分解为区间模的直和。
+\end{enumerate}
+这些结论是\textbf{箭图表示论（Quiver Theory）}中 Gabriel 定理的直接应用。我们不必掌握证明。
+\end{proposition}
+
+
+\begin{definition}[持续模的持续图]
+\label{def:pm-persistence-diagram}
+设 \(\mathbb{U} \cong \bigoplus_{j} \mathbb{I}\langle b_j, d_j \rangle\) 为区间分解。则 \(\mathbb{U}\) 的\textbf{持续图（Persistence Diagram）} \(\operatorname{Dgm}\mathbb{U}\) 是点集 \(\{(b_j, d_j)\}\) 加上对角线 \(\Delta = \{(x,x)\}\) 上的无穷重数点。
+\end{definition}
+
+\subsection{等距定理}
+\label{subsec:isometry}
+
+\begin{theorem}[等距定理]
+\label{thm:isometry}
+对任意两个定义在 \(\mathbb{R}\) 上的 \(q\)-可驯持续模 \(\mathbb{U}\) 与 \(\mathbb{V}\)，有
+\[
+d_I(\mathbb{U}, \mathbb{V}) = d_b(\operatorname{Dgm}\mathbb{U}, \operatorname{Dgm}\mathbb{V}).
+\]
+\end{theorem}
+
+\begin{remark}
+等距定理建立了“模之间的交错距离”与“持续图之间的瓶颈距离”的精确对应。这意味着持续图不仅是拓扑特征的直观表示，更是持续模\textbf{完全不丢失信息}的等价描述。这为后续稳定性定理提供了更深层的代数解释。
+\end{remark}
+
+\begin{remark}[有限索引集的修正]
+若持续模定义在有限索引集上（如 \(A = \{0,1,\dots,n\}\)），其区间分解为闭-闭型 \([b,d]\)。为应用等距定理，需将区间 \([b,d]\) 映射为持续图中的点 \((b, d+1)\)，因为扩展至 \(\mathbb{R}\) 后该区间实际为 \([b, d+1)\)。
+\end{remark}
+
+\section{PL-函数的持续同调（Persistence for PL-Functions）}
+\label{sec:pl-persistence}
+
+
+给定一个分段线性（PL）函数 \(f: |K| \to \mathbb{R}\)，可以构造两种滤过：
+\begin{itemize}
+    \item \textbf{空间子水平集滤过}：\(\{|K|_a\}_{a \in \mathbb{R}}\)，其中 \(|K|_a = \{x \in |K| \mid f(x) \le a\}\)；
+    \item \textbf{单纯下星滤过}：\(\{K_a\}_{a \in \mathbb{R}}\)，其中 \(K_a\) 由所有函数值 \(\le a\) 的顶点张成。
+\end{itemize}
+本节研究两者的关系，证明它们在持续同调层面等价，从而允许我们在离散的单纯复形上计算 PL-函数的持续图。
+
+\subsection{Morse函数}
+\label{subsec:morse-function}
+
+先补充一些微分流形的概念：
+
+\begin{definition}[光滑 Morse 函数]
+\label{def:smooth-morse}
+设 \(M\) 为光滑流形，\(f: M \to \mathbb{R}\) 为光滑函数。
+\begin{itemize}
+    \item 点 \(p \in M\) 称为 \(f\) 的\textbf{临界点（critical point）}，若其在局部坐标系下的梯度向量为零：
+    \[
+    \nabla f(p) = \left. \left( \frac{\partial f}{\partial x_1}, \dots, \frac{\partial f}{\partial x_m} \right) \right|_p = \mathbf{0}.
+    \]
+    \item 临界点 \(p\) 称为\textbf{非退化的（non-degenerate）}，若其 Hessian 矩阵（二阶偏导数矩阵）在 \(p\) 处\textbf{满秩}（行列式不为零）。
+    \item 若 \(f\) 的所有临界点均非退化，则称 \(f\) 为 \textbf{Morse 函数}。
+\end{itemize}
+\end{definition}
+
+\begin{theorem}[Morse 引理]
+\label{thm:morse-lemma}
+设 \(p\) 是 Morse 函数 \(f: M \to \mathbb{R}\) 的非退化临界点。则存在 \(p\) 附近的局部坐标系 \((x_1, \dots, x_m)\)，使得在该坐标下，
+\[
+f(x) = f(p) - x_1^2 - \cdots - x_s^2 + x_{s+1}^2 + \cdots + x_m^2,
+\]
+其中 \(s \in \{0, 1, \dots, m\}\) 称为该临界点的\textbf{指标（index）}。
+\end{theorem}
+
+\begin{remark}[指标的几何意义]
+对于定义在二维曲面上的 Morse 函数：
+\begin{itemize}
+    \item 指标 \(0\)：局部极小值（谷底）；
+    \item 指标 \(1\)：鞍点（山脊/通道）；
+    \item 指标 \(2\)：局部极大值（山峰）。
+\end{itemize}
+当函数值穿过一个指标为 \(k\) 的临界点时，子水平集的拓扑变化等价于\textbf{粘合一个 \(k\)-维胞腔（\(k\)-cell）}。这正是持续同调中“出生/死亡”事件的来源。
+\end{remark}
+
+\begin{remark}[与 PL 临界点的类比]
+在 PL（分段线性）情形下，流形被三角剖分为单纯复形 \(K\)，函数 \(f\) 退化为定义在顶点上的实值函数。此时：
+\begin{itemize}
+    \item 光滑的“梯度为零”（临界点）对应于 PL 中\textbf{下链环（Lower Link）的同调群非平凡}；
+    \item 光滑的“指标”对应于 PL 中\textbf{下链环的约化贝蒂数的维度}。
+\end{itemize}
+这种类比使得 Morse 理论能够推广到离散点云和网格数据上，构成拓扑数据分析（TDA）的理论基石。
+\end{remark}
+
+\subsection{PL-临界点（PL-Critical Points）}
+\label{subsec:pl-critical}
+
+光滑 Morse 函数的临界点由梯度消失刻画，其类型由 Hessian 矩阵的指标决定。在 PL 情形下，临界点由\textbf{下链环（Lower Link）}和\textbf{上链环（Upper Link）}的同调刻画。
+
+\begin{definition}[约化贝蒂数]
+\label{def:reduced-betti}
+对空间 \(X\)，其第 \(p\) 个\textbf{约化贝蒂数（Reduced Betti Number）} \(\tilde{\beta}_p(X)\) 定义为：
+\[
+\tilde{\beta}_p(X) = 
+\begin{cases}
+\beta_p(X), & p > 0,\\
+\beta_0(X) - 1, & p = 0 \text{ 且 } X \neq \emptyset,\\
+0, & p = 0 \text{ 且 } X = \emptyset,\\
+1, & p = -1 \text{ 且 } X = \emptyset.
+\end{cases}
+\]
+\end{definition}
+
+\begin{definition}[PL-临界点]
+\label{def:pl-critical}
+设 \(f: |K| \to \mathbb{R}\) 为 PL-函数，\(v \in V(K)\)。称 \(v\) 为\textbf{正则点（regular）}，若对任意 \(p \ge -1\)，
+\[
+\tilde{\beta}_p(\operatorname{Llk}(v)) = 0, \qquad \tilde{\beta}_p(\operatorname{Ulk}(v)) = 0.
+\]
+否则，\(v\) 称为 \textbf{PL-临界点（PL-critical point）}。
+
+若 \(\tilde{\beta}_{p-1}(\operatorname{Llk}(v)) > 0\)，称 \(v\) 具有\textbf{下链环指标 \(p\)（lower-link-index \(p\)）}；若 \(\tilde{\beta}_{p-1}(\operatorname{Ulk}(v)) > 0\)，称 \(v\) 具有\textbf{上链环指标 \(p\)（upper-link-index \(p\)）}。
+\end{definition}
+
+\begin{remark}
+PL-临界点可能同时具有多个下链环指标和上链环指标，这是 PL 情形相对于光滑情形的复杂性所在。
+\end{remark}
+
+\subsection{空间子水平集与单纯下星滤过的同构}
+\label{subsec:pl-sublevel-isomorphism}
+
+\begin{theorem}
+\label{thm:pl-sublevel-isomorphism}
+设 \(f: |K| \to \mathbb{R}\) 为 PL-函数。对任意 \(a \in \mathbb{R}\)，空间子水平集 \(|K|_a\) 与单纯子复形 \(K_a\) 具有同构的同调群：
+\[
+H_*(K_a) \cong H_*(|K|_a).
+\]
+进一步，如下交换图成立（水平箭头由包含映射诱导）：
+\[
+\begin{array}{ccc}
+H_*(K_a) & \xrightarrow{\sim} & H_*(|K|_a) \\
+\downarrow & & \downarrow \\
+H_*(K_b) & \xrightarrow{\sim} & H_*(|K|_b)
+\end{array}
+\]
+\end{theorem}
+
+\begin{remark}
+该定理的核心是构造一个从 \(|K|_a\) 到 \(|K_a|\) 的\textbf{形变收缩（Deformation Retraction）}。其几何直观是：在每一个单纯形中，函数值超过 \(a\) 的部分被沿直线投影到其边界上（见图 3.15）。由于 \(f\) 是分片线性的，这一投影是连续的。
+\end{remark}
+
+\begin{corollary}
+\label{cor:pl-isomorphic-persistence}
+空间子水平集滤过与单纯下星滤过诱导同构的持续模，因此具有完全相同的持续图。
+\end{corollary}
+
+\subsection{PL-临界点与同调变化}
+\label{subsec:pl-critical-homology}
+
+\begin{theorem}
+\label{thm:pl-critical-change}
+设 \(f: |K| \to \mathbb{R}\) 为 PL-函数，顶点按函数值递增排列为 \(v_1,\dots,v_n\)，\(K_i = K_{f(v_i)}\)。对任意 \(r \in [2,n]\) 和 \(p \ge 0\)，包含映射 \(K_{r-1} \hookrightarrow K_r\) 诱导同调群的同构
+\[
+H_p(K_{r-1}) \cong H_p(K_r)
+\]
+\textbf{除非} \(v_r\) 是具有下链环指标 \(p\) 或 \(p+1\) 的 PL-临界点。
+\end{theorem}
+
+\begin{proof}[证明思路]
+令 \(A = \overline{\operatorname{Lst}}(v_r)\)（闭下星），\(B = K_{r-1}\)。则 \(U = A \cup B = K_r\)，\(V = A \cap B = \operatorname{Llk}(v_r)\)。由于 \(A\) 是 \(v_r\) 在 \(\operatorname{Llk}(v_r)\) 上的锥，其约化同调平凡。应用 Mayer–Vietoris 序列：
+\[
+\cdots \to \tilde{H}_p(V) \to \tilde{H}_p(A) \oplus \tilde{H}_p(B) \to \tilde{H}_p(U) \to \tilde{H}_{p-1}(V) \to \cdots.
+\]
+若 \(v_r\) 既非下链环指标 \(p\) 亦非 \(p+1\)，则 \(\tilde{H}_p(V)\) 和 \(\tilde{H}_{p-1}(V)\) 均为零，从而 \(\tilde{H}_p(B) \to \tilde{H}_p(U)\) 为同构。结论得证。
+\end{proof}
+
+\begin{corollary}
+\label{cor:pl-critical-interval}
+若区间 \([a,b]\) 不包含任何 PL-临界值，则：
+\begin{enumerate}
+    \item 包含映射 \(K_a \hookrightarrow K_b\) 诱导同调群的同构；
+    \item 包含映射 \(|K|_a \hookrightarrow |K|_b\) 诱导奇异同调群的同构。
+\end{enumerate}
+\end{corollary}
+
+\subsection{下星滤过的持续图}
+\label{subsec:lower-star-persistence}
+
+\begin{fact}
+\label{fact:pl-persistence-pairs}
+对 PL-函数 \(f: |K| \to \mathbb{R}\)，其下星滤过 \(\mathcal{F}_f\) 的持续配对函数 \(\mu_{f,p}^{i,j}\) 若非零，则顶点 \(v_i\) 和 \(v_j\) 必为 PL-临界点。但并非所有 PL-临界点都会出现在持续配对的端点中。
+\end{fact}
+
+由推论~\ref{cor:pl-isomorphic-persistence}，空间子水平集滤过与下星滤过具有相同的持续图。因此，只需计算下星滤过的持续图。为此，将下星滤过展开为逐单形滤过 \(\mathcal{F}_s\)，运行 MATPERSISTENCE，然后“聚合”同一顶点下星内的局部配对。
+
+\begin{theorem}[PL-情形下持续图的计算]
+\label{thm:pl-persistence-computation}
+设 \(f: |K| \to \mathbb{R}\) 为 PL-函数，\(\mathcal{F}_s\) 为由下星滤过展开的逐单形滤过，\(\mu_{s,p}^{i,j}\) 为其配对函数。则下星滤过 \(\mathcal{F}_f\) 的配对函数为：
+\[
+\mu_{f,p}^{i,j} = \sum_{\substack{b \in (I_{i-1}, I_i] \\ d \in (I_{j-1}, I_j]}} \mu_{s,p}^{b,d}, \qquad (i < j \le n),
+\]
+\[
+\mu_{f,p}^{i,\infty} = \sum_{b \in (I_{i-1}, I_i]} \mu_{s,p}^{b,\infty},
+\]
+其中 \(I_i\) 表示顶点 \(v_i\) 的下星中最后一个单纯形的索引。若 \(\mu_{f,p}^{i,j} \neq 0\)，则在持续图中添加点 \((f(v_i), f(v_j))\)，重数为 \(\mu_{f,p}^{i,j}\)。
+\end{theorem}
+
+\begin{remark}
+直观上，凡是在同一个顶点的下星内部配对的单纯形对（即 \(\pi(i) = \pi(j)\)）都会被“聚合”掉，不产生持续图上的点。只有跨顶点的配对才反映 PL-函数的真正持续特征。
+\end{remark}
+
+\section*{第三章 本章理论总结}
+\addcontentsline{toc}{section}{第三章 本章理论总结}
+
+本章从滤过（Filtration）的基本概念出发，系统建立了持续同调的理论框架，涵盖了从拓扑空间到单纯复形的离散化、同调类的出生与死亡、持续图与条形码的构造，以及持续模的代数理论。现将核心理论逻辑梳理如下：
+
+\subsection*{一、滤过：持续同调的输入}
+
+持续同调的起点是一个\textbf{嵌套的空间或复形序列}，称为滤过。滤过可由拓扑空间上的实值函数（空间滤过）或单纯复形的逐单形添加（单纯滤过）诱导。两者通过三角剖分和 PL-函数理论建立联系。
+
+关键结论：
+\begin{itemize}
+    \item 空间滤过诱导同调模，是持续同调的几何来源；
+    \item 单纯滤过是实际计算的基础，逐单形滤过可通过展开任意滤过得到；
+    \item 顶点函数通过下星构造诱导单纯滤过，但并非所有单纯滤过都可由顶点函数诱导；
+    \item 逐单形单调函数与单纯滤过一一对应，是连接滤过与代数的桥梁。
+\end{itemize}
+
+\subsection*{二、持续同调群：同调类的演化}
+
+固定维数 \(p\)，滤过诱导的持续同调群 \(H_p^{i,j} = \operatorname{Im}(H_p(X_i) \to H_p(X_j))\) 记录了在尺度 \(i\) 与 \(j\) 之间存活的同调类。
+
+核心结构与事实：
+\begin{itemize}
+    \item 持续贝蒂数 \(\beta_p^{i,j} = \dim H_p^{i,j}\) 量化了存活类的数量；
+    \item \(H_p^{i,j} \cong Z_p(X_i) / (Z_p(X_i) \cap B_p(X_j))\)：一个闭链在更大的空间中成为边界，即代表“死亡”；
+    \item 同调类的\textbf{出生}与\textbf{死亡}定义了其\textbf{寿命（persistence）}——长寿命特征被视为真实拓扑，短寿命则被视为噪声。
+\end{itemize}
+
+\subsection*{三、持续图与条形码：视觉化与定量化}
+
+持续图将每个同调类的出生-死亡对 \((a_i, a_j)\) 表示为扩展平面 \(\bar{\mathbb{R}}^2\) 中的点，重数为 \(\mu_p^{i,j}\)。条形码是等价表示，将每个类表示为一条线段。
+
+定量配对的数学核心：
+\[
+\mu_p^{i,j} = \left(\beta_p^{i,j-1} - \beta_p^{i,j}\right) - \left(\beta_p^{i-1,j-1} - \beta_p^{i-1,j}\right).
+\]
+该公式通过四个持续贝蒂数的交替和，精确提取在 \(X_i\) 出生、在 \(X_j\) 死亡的独立类数量。
+
+定性配对规则（\hyperref[fact:youngest-first]{事实~3.3}）：
+\begin{itemize}
+    \item 当多个类合并后死亡时，只有\textbf{最晚出生}的那个类被记录为死亡；
+    \item 该规则的本质是“最年轻优先（Youngest First）”原则；
+    \item 其深层原因是持续模作为 \(k[t]\)-模的 PID 结构定理：自由模对应无限条，挠模 \(k[t]/(t^n)\) 对应有限条。
+\end{itemize}
+
+\subsection*{四、持续图的稳定性：噪声容忍的数学保证}
+
+持续图之所以在数据科学中有用，关键在于其对函数扰动的\textbf{稳定性}。
+
+\begin{itemize}
+    \item \textbf{瓶颈距离} \(d_b\)（\hyperref[def:bottleneck-distance]{定义~3.11}）：通过二分图完美匹配定义，度量两个持续图之间的差异；
+    \item \textbf{稳定性定理}（\hyperref[thm:simplicial-stability]{定理~3.2}、\hyperref[thm:space-stability]{定理~3.3}）：\(\displaystyle d_b(\operatorname{Dgm}_p(\mathcal{F}_f), \operatorname{Dgm}_p(\mathcal{F}_g)) \le \|f - g\|_\infty\)；
+    \item \textbf{Wasserstein 距离} \(d_{W,q}\)（\hyperref[def:wasserstein-distance]{定义~3.10}）：更精细的距离度量，关注所有点的匹配误差总和；
+    \item \textbf{Wasserstein 稳定性}（\hyperref[thm:wasserstein-strong]{定理~3.4}）：\(\displaystyle d_{W,q} \le \|f - g\|_q\)（强版本，用 \(L^q\) 范数）；
+    \item 对角线上无穷重数点的引入，为比较不同大小的持续图提供了技术基础。
+\end{itemize}
+
+\subsection*{五、持续模：代数抽象与等距定理}
+
+持续模将同调模抽象为任意向量空间与线性映射的族，是持续同调的\textbf{代数核心}。
+
+关键理论成果：
+\begin{itemize}
+    \item \textbf{区间分解定理}（\hyperref[prop:interval-decomposition]{命题~3.10}）：任何好的持续模唯一分解为区间模的直和；
+    \item \textbf{区间模} \(\mathbb{I}\langle b,d\rangle\)（\hyperref[def:interval-module]{定义~3.20}）：持续图中一根条的代数对应；
+    \item \textbf{交错距离} \(d_I\)（\hyperref[def:interleaving-distance]{定义~3.17}）：两个持续模之间通过“平移映射”定义的距离；
+    \item \textbf{等距定理}（\hyperref[thm:isometry]{定理~3.11}）：
+    \[
+    d_I(\mathbb{U}, \mathbb{V}) = d_b(\operatorname{Dgm}\mathbb{U}, \operatorname{Dgm}\mathbb{V}).
+    \]
+    这是本章最深刻的结论之一，它建立了“代数层面的交错距离”与“拓扑层面的瓶颈距离”之间的精确对应，表明持续图是持续模的\textbf{完备不变量}。
+\end{itemize}
+
+\subsection*{六、PL-函数的下星滤过：理论与计算的桥梁}
+
+为了将上述理论付诸计算，3.5 节建立了 PL-函数的持续同调理论：
+
+\begin{itemize}
+    \item \textbf{PL-临界点}（\hyperref[def:pl-critical]{定义~3.23}）通过下链环和上链环的约化贝蒂数定义，是持续对可能出现的唯一位置；
+    \item \hyperref[thm:pl-sublevel-isomorphism]{定理~3.12} 证明空间子水平集滤过与单纯下星滤过具有同构的同调群，允许我们在离散复形上计算；
+    \item \hyperref[thm:pl-persistence-computation]{定理~3.16} 给出了从下星滤过展开的逐单形滤过中“聚合”局部配对、提取 PL-函数持续图的方法；
+    \item 零维情形（3.5.3）进一步简化为并查集算法，体现了理论指导实践的精髓。
+\end{itemize}
+
+\subsection*{七、整体理论脉络}
+
+\begin{center}
+\begin{tikzpicture}[node distance=1.8cm, auto, >=stealth]
+    \node (filtration) {滤过};
+    \node (module) [right of=filtration] {同调模};
+    \node (pm) [right of=module] {持续模};
+    \node (diagram) [right of=pm] {持续图};
+    \node (stable) [below of=diagram] {稳定性};
+    \node (pl) [below of=filtration] {PL-函数理论};
+    \draw[->] (filtration) -- (module);
+    \draw[->] (module) -- (pm);
+    \draw[->] (pm) -- (diagram);
+    \draw[->] (diagram) -- (stable);
+    \draw[->] (pl) -- (filtration);
+    \draw[->] (pl) -- (module);
+\end{tikzpicture}
+\end{center}
+
+\noindent \textbf{核心结论}：持续同调将拓扑空间的滤过转化为代数对象（持续模），通过区间分解得到组合不变量（持续图），并借助稳定性定理保证其在实际计算中的可靠性。PL-函数理论确保了离散计算的合法性，而等距定理则完成了从几何到代数的闭环。整个理论框架兼具数学深刻性与计算可行性，是 TDA 成功应用于数据科学的基础。
+
+\end{document}
