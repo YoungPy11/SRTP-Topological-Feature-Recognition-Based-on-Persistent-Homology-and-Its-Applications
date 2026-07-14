@@ -25,7 +25,7 @@
 ### 环境安装
 
 ```bash
-git clone https://github.com/YoungPy11/-.git
+git clone https://github.com/YoungPy11/SRTP-Topological-Feature-Recognition-Based-on-Persistent-Homology-and-Its-Applications.git
 cd "基于持续同调的拓扑特征识别及其应用"
 pip install -r requirements.txt
 ```
