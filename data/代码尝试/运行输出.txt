@@ -1,0 +1,514 @@
+PS D:\Program Files\Microsoft VS Code> & E:\python.exe e:/BaiduNetdiskDownload/计算拓扑＆TDA/github仓库/代码尝试/test.py
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:40: UserWarning: Glyph 22278 (\N{CJK UNIFIED IDEOGRAPH-5706}) missing from font(s) DejaVu Sans.
+  plt.tight_layout()
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:40: UserWarning: Glyph 29615 (\N{CJK UNIFIED IDEOGRAPH-73AF}) missing from font(s) DejaVu Sans.
+  plt.tight_layout()
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:40: UserWarning: Glyph 28857 (\N{CJK UNIFIED IDEOGRAPH-70B9}) missing from font(s) DejaVu Sans.
+  plt.tight_layout()
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:40: UserWarning: Glyph 20113 (\N{CJK UNIFIED IDEOGRAPH-4E91}) missing from font(s) DejaVu Sans.
+  plt.tight_layout()
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:40: UserWarning: Glyph 26377 (\N{CJK UNIFIED IDEOGRAPH-6709}) missing from font(s) DejaVu Sans.
+  plt.tight_layout()
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:40: UserWarning: Glyph 30424 (\N{CJK UNIFIED IDEOGRAPH-76D8}) missing from font(s) DejaVu Sans.
+  plt.tight_layout()
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:40: UserWarning: Glyph 26080 (\N{CJK UNIFIED IDEOGRAPH-65E0}) missing from font(s) DejaVu Sans.
+  plt.tight_layout()
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:41: UserWarning: Glyph 22278 (\N{CJK UNIFIED IDEOGRAPH-5706}) missing from font(s) DejaVu Sans.
+  plt.savefig("1_pointclouds.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:41: UserWarning: Glyph 29615 (\N{CJK UNIFIED IDEOGRAPH-73AF}) missing from font(s) DejaVu Sans.
+  plt.savefig("1_pointclouds.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:41: UserWarning: Glyph 28857 (\N{CJK UNIFIED IDEOGRAPH-70B9}) missing from font(s) DejaVu Sans.
+  plt.savefig("1_pointclouds.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:41: UserWarning: Glyph 20113 (\N{CJK UNIFIED IDEOGRAPH-4E91}) missing from font(s) DejaVu Sans.
+  plt.savefig("1_pointclouds.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:41: UserWarning: Glyph 26377 (\N{CJK UNIFIED IDEOGRAPH-6709}) missing from font(s) DejaVu Sans.
+  plt.savefig("1_pointclouds.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:41: UserWarning: Glyph 30424 (\N{CJK UNIFIED IDEOGRAPH-76D8}) missing from font(s) DejaVu Sans.
+  plt.savefig("1_pointclouds.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:41: UserWarning: Glyph 26080 (\N{CJK UNIFIED IDEOGRAPH-65E0}) missing from font(s) DejaVu Sans.
+  plt.savefig("1_pointclouds.png", dpi=150)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 22278 (\N{CJK UNIFIED IDEOGRAPH-5706}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 29615 (\N{CJK UNIFIED IDEOGRAPH-73AF}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 28857 (\N{CJK UNIFIED IDEOGRAPH-70B9}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 20113 (\N{CJK UNIFIED IDEOGRAPH-4E91}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 26377 (\N{CJK UNIFIED IDEOGRAPH-6709}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 30424 (\N{CJK UNIFIED IDEOGRAPH-76D8}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 26080 (\N{CJK UNIFIED IDEOGRAPH-65E0}) missing from font(s) DejaVu Sans.
+  func(*args)
+📊 已保存点云对比图: 1_pointclouds.png
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 27515 (\N{CJK UNIFIED IDEOGRAPH-6B7B}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 20129 (\N{CJK UNIFIED IDEOGRAPH-4EA1}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 22278 (\N{CJK UNIFIED IDEOGRAPH-5706}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 29615 (\N{CJK UNIFIED IDEOGRAPH-73AF}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 30340 (\N{CJK UNIFIED IDEOGRAPH-7684}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 25345 (\N{CJK UNIFIED IDEOGRAPH-6301}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 32493 (\N{CJK UNIFIED IDEOGRAPH-7EED}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 22270 (\N{CJK UNIFIED IDEOGRAPH-56FE}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 34013 (\N{CJK UNIFIED IDEOGRAPH-84DD}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 33394 (\N{CJK UNIFIED IDEOGRAPH-8272}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 28857 (\N{CJK UNIFIED IDEOGRAPH-70B9}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 31163 (\N{CJK UNIFIED IDEOGRAPH-79BB}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 23545 (\N{CJK UNIFIED IDEOGRAPH-5BF9}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 35282 (\N{CJK UNIFIED IDEOGRAPH-89D2}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 32447 (\N{CJK UNIFIED IDEOGRAPH-7EBF}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 36234 (\N{CJK UNIFIED IDEOGRAPH-8D8A}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 36828 (\N{CJK UNIFIED IDEOGRAPH-8FDC}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 20195 (\N{CJK UNIFIED IDEOGRAPH-4EE3}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 34920 (\N{CJK UNIFIED IDEOGRAPH-8868}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 26174 (\N{CJK UNIFIED IDEOGRAPH-663E}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 33879 (\N{CJK UNIFIED IDEOGRAPH-8457}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 20986 (\N{CJK UNIFIED IDEOGRAPH-51FA}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 29983 (\N{CJK UNIFIED IDEOGRAPH-751F}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 27515 (\N{CJK UNIFIED IDEOGRAPH-6B7B}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 20129 (\N{CJK UNIFIED IDEOGRAPH-4EA1}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 22278 (\N{CJK UNIFIED IDEOGRAPH-5706}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 29615 (\N{CJK UNIFIED IDEOGRAPH-73AF}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 30340 (\N{CJK UNIFIED IDEOGRAPH-7684}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 25345 (\N{CJK UNIFIED IDEOGRAPH-6301}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 32493 (\N{CJK UNIFIED IDEOGRAPH-7EED}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 22270 (\N{CJK UNIFIED IDEOGRAPH-56FE}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 34013 (\N{CJK UNIFIED IDEOGRAPH-84DD}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 33394 (\N{CJK UNIFIED IDEOGRAPH-8272}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 28857 (\N{CJK UNIFIED IDEOGRAPH-70B9}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 31163 (\N{CJK UNIFIED IDEOGRAPH-79BB}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 23545 (\N{CJK UNIFIED IDEOGRAPH-5BF9}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 35282 (\N{CJK UNIFIED IDEOGRAPH-89D2}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 32447 (\N{CJK UNIFIED IDEOGRAPH-7EBF}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 36234 (\N{CJK UNIFIED IDEOGRAPH-8D8A}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 36828 (\N{CJK UNIFIED IDEOGRAPH-8FDC}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 20195 (\N{CJK UNIFIED IDEOGRAPH-4EE3}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 34920 (\N{CJK UNIFIED IDEOGRAPH-8868}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 26174 (\N{CJK UNIFIED IDEOGRAPH-663E}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 33879 (\N{CJK UNIFIED IDEOGRAPH-8457}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 20986 (\N{CJK UNIFIED IDEOGRAPH-51FA}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 29983 (\N{CJK UNIFIED IDEOGRAPH-751F}) missing from font(s) DejaVu Sans.
+  func(*args)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 30424 (\N{CJK UNIFIED IDEOGRAPH-76D8}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 26080 (\N{CJK UNIFIED IDEOGRAPH-65E0}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 30424 (\N{CJK UNIFIED IDEOGRAPH-76D8}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 26080 (\N{CJK UNIFIED IDEOGRAPH-65E0}) missing from font(s) DejaVu Sans.
+  func(*args)
+📊 已保存持续图对比: 2_pd_circle.png, 3_pd_disk.png
+
+🔢 【特征向量对比】
+圆环样本的 Top-10 寿命: [1.43348821 0.02385088 0.02304113 0.02296351 0.01577005 0.01405603
+ 0.01250035 0.01241966 0.01107792 0.01073825]
+圆盘样本的 Top-10 寿命: [0.15185621 0.12028523 0.11638211 0.11631729 0.10331596 0.0957851
+ 0.08862258 0.0804186  0.07890595 0.07478908]
+💡 观察: 圆环的第1个特征(最长寿命)约为2.0，而圆盘的第1个特征只有0.1左右，这就是分类器100%准确的数学原因。
+单棵树重要性: [0. 0. 0. 0. 0. 0. 0. 0. 1. 0.]
+
+🎯 分类准确率: 1.000
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:133: UserWarning: Glyph 37325 (\N{CJK UNIFIED IDEOGRAPH-91CD}) missing from font(s) DejaVu Sans.
+  plt.savefig("4_feature_importance.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:133: UserWarning: Glyph 35201 (\N{CJK UNIFIED IDEOGRAPH-8981}) missing from font(s) DejaVu Sans.
+  plt.savefig("4_feature_importance.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:133: UserWarning: Glyph 24615 (\N{CJK UNIFIED IDEOGRAPH-6027}) missing from font(s) DejaVu Sans.
+  plt.savefig("4_feature_importance.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:133: UserWarning: Glyph 26435 (\N{CJK UNIFIED IDEOGRAPH-6743}) missing from font(s) DejaVu Sans.
+  plt.savefig("4_feature_importance.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:133: UserWarning: Glyph 38543 (\N{CJK UNIFIED IDEOGRAPH-968F}) missing from font(s) DejaVu Sans.
+  plt.savefig("4_feature_importance.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:133: UserWarning: Glyph 26426 (\N{CJK UNIFIED IDEOGRAPH-673A}) missing from font(s) DejaVu Sans.
+  plt.savefig("4_feature_importance.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:133: UserWarning: Glyph 26862 (\N{CJK UNIFIED IDEOGRAPH-68EE}) missing from font(s) DejaVu Sans.
+  plt.savefig("4_feature_importance.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:133: UserWarning: Glyph 26519 (\N{CJK UNIFIED IDEOGRAPH-6797}) missing from font(s) DejaVu Sans.
+  plt.savefig("4_feature_importance.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:133: UserWarning: Glyph 29305 (\N{CJK UNIFIED IDEOGRAPH-7279}) missing from font(s) DejaVu Sans.
+  plt.savefig("4_feature_importance.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:133: UserWarning: Glyph 24449 (\N{CJK UNIFIED IDEOGRAPH-5F81}) missing from font(s) DejaVu Sans.
+  plt.savefig("4_feature_importance.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:133: UserWarning: Glyph 21069 (\N{CJK UNIFIED IDEOGRAPH-524D}) missing from font(s) DejaVu Sans.
+  plt.savefig("4_feature_importance.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:133: UserWarning: Glyph 20010 (\N{CJK UNIFIED IDEOGRAPH-4E2A}) missing from font(s) DejaVu Sans.
+  plt.savefig("4_feature_importance.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:133: UserWarning: Glyph 29615 (\N{CJK UNIFIED IDEOGRAPH-73AF}) missing from font(s) DejaVu Sans.
+  plt.savefig("4_feature_importance.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:133: UserWarning: Glyph 23551 (\N{CJK UNIFIED IDEOGRAPH-5BFF}) missing from font(s) DejaVu Sans.
+  plt.savefig("4_feature_importance.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:133: UserWarning: Glyph 21629 (\N{CJK UNIFIED IDEOGRAPH-547D}) missing from font(s) DejaVu Sans.
+  plt.savefig("4_feature_importance.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:133: UserWarning: Glyph 24207 (\N{CJK UNIFIED IDEOGRAPH-5E8F}) missing from font(s) DejaVu Sans.
+  plt.savefig("4_feature_importance.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:133: UserWarning: Glyph 21495 (\N{CJK UNIFIED IDEOGRAPH-53F7}) missing from font(s) DejaVu Sans.
+  plt.savefig("4_feature_importance.png", dpi=150)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 37325 (\N{CJK UNIFIED IDEOGRAPH-91CD}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 35201 (\N{CJK UNIFIED IDEOGRAPH-8981}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 24615 (\N{CJK UNIFIED IDEOGRAPH-6027}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 26435 (\N{CJK UNIFIED IDEOGRAPH-6743}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 38543 (\N{CJK UNIFIED IDEOGRAPH-968F}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 26426 (\N{CJK UNIFIED IDEOGRAPH-673A}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 26862 (\N{CJK UNIFIED IDEOGRAPH-68EE}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 26519 (\N{CJK UNIFIED IDEOGRAPH-6797}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 29305 (\N{CJK UNIFIED IDEOGRAPH-7279}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 24449 (\N{CJK UNIFIED IDEOGRAPH-5F81}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 21069 (\N{CJK UNIFIED IDEOGRAPH-524D}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 20010 (\N{CJK UNIFIED IDEOGRAPH-4E2A}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 29615 (\N{CJK UNIFIED IDEOGRAPH-73AF}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 23551 (\N{CJK UNIFIED IDEOGRAPH-5BFF}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 21629 (\N{CJK UNIFIED IDEOGRAPH-547D}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 24207 (\N{CJK UNIFIED IDEOGRAPH-5E8F}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 21495 (\N{CJK UNIFIED IDEOGRAPH-53F7}) missing from font(s) DejaVu Sans.
+  func(*args)
+📊 已保存特征重要性图: 4_feature_importance.png
+💡 第1个特征(最长寿命)的重要性: 0.110，它几乎独立承担了全部分类任务。
+PS D:\Program Files\Microsoft VS Code> & E:\python.exe e:/BaiduNetdiskDownload/计算拓扑＆TDA/github仓库/代码尝试/test.py
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:40: UserWarning: Glyph 22278 (\N{CJK UNIFIED IDEOGRAPH-5706}) missing from font(s) DejaVu Sans.
+  plt.tight_layout()
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:40: UserWarning: Glyph 29615 (\N{CJK UNIFIED IDEOGRAPH-73AF}) missing from font(s) DejaVu Sans.
+  plt.tight_layout()
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:40: UserWarning: Glyph 28857 (\N{CJK UNIFIED IDEOGRAPH-70B9}) missing from font(s) DejaVu Sans.
+  plt.tight_layout()
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:40: UserWarning: Glyph 20113 (\N{CJK UNIFIED IDEOGRAPH-4E91}) missing from font(s) DejaVu Sans.
+  plt.tight_layout()
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:40: UserWarning: Glyph 26377 (\N{CJK UNIFIED IDEOGRAPH-6709}) missing from font(s) DejaVu Sans.
+  plt.tight_layout()
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:40: UserWarning: Glyph 30424 (\N{CJK UNIFIED IDEOGRAPH-76D8}) missing from font(s) DejaVu Sans.
+  plt.tight_layout()
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:40: UserWarning: Glyph 26080 (\N{CJK UNIFIED IDEOGRAPH-65E0}) missing from font(s) DejaVu Sans.
+  plt.tight_layout()
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:41: UserWarning: Glyph 22278 (\N{CJK UNIFIED IDEOGRAPH-5706}) missing from font(s) DejaVu Sans.
+  plt.savefig("1_pointclouds.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:41: UserWarning: Glyph 29615 (\N{CJK UNIFIED IDEOGRAPH-73AF}) missing from font(s) DejaVu Sans.
+  plt.savefig("1_pointclouds.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:41: UserWarning: Glyph 28857 (\N{CJK UNIFIED IDEOGRAPH-70B9}) missing from font(s) DejaVu Sans.
+  plt.savefig("1_pointclouds.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:41: UserWarning: Glyph 20113 (\N{CJK UNIFIED IDEOGRAPH-4E91}) missing from font(s) DejaVu Sans.
+  plt.savefig("1_pointclouds.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:41: UserWarning: Glyph 26377 (\N{CJK UNIFIED IDEOGRAPH-6709}) missing from font(s) DejaVu Sans.
+  plt.savefig("1_pointclouds.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:41: UserWarning: Glyph 30424 (\N{CJK UNIFIED IDEOGRAPH-76D8}) missing from font(s) DejaVu Sans.
+  plt.savefig("1_pointclouds.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:41: UserWarning: Glyph 26080 (\N{CJK UNIFIED IDEOGRAPH-65E0}) missing from font(s) DejaVu Sans.
+  plt.savefig("1_pointclouds.png", dpi=150)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 22278 (\N{CJK UNIFIED IDEOGRAPH-5706}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 29615 (\N{CJK UNIFIED IDEOGRAPH-73AF}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 28857 (\N{CJK UNIFIED IDEOGRAPH-70B9}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 20113 (\N{CJK UNIFIED IDEOGRAPH-4E91}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 26377 (\N{CJK UNIFIED IDEOGRAPH-6709}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 30424 (\N{CJK UNIFIED IDEOGRAPH-76D8}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 26080 (\N{CJK UNIFIED IDEOGRAPH-65E0}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:2068: UserWarning: Glyph 22278 (\N{CJK UNIFIED IDEOGRAPH-5706}) missing from font(s) DejaVu Sans.
+  return self.func(*args)
+E:\Lib\tkinter\__init__.py:2068: UserWarning: Glyph 29615 (\N{CJK UNIFIED IDEOGRAPH-73AF}) missing from font(s) DejaVu Sans.
+  return self.func(*args)
+E:\Lib\tkinter\__init__.py:2068: UserWarning: Glyph 28857 (\N{CJK UNIFIED IDEOGRAPH-70B9}) missing from font(s) DejaVu Sans.
+  return self.func(*args)
+E:\Lib\tkinter\__init__.py:2068: UserWarning: Glyph 20113 (\N{CJK UNIFIED IDEOGRAPH-4E91}) missing from font(s) DejaVu Sans.
+  return self.func(*args)
+E:\Lib\tkinter\__init__.py:2068: UserWarning: Glyph 26377 (\N{CJK UNIFIED IDEOGRAPH-6709}) missing from font(s) DejaVu Sans.
+  return self.func(*args)
+E:\Lib\tkinter\__init__.py:2068: UserWarning: Glyph 30424 (\N{CJK UNIFIED IDEOGRAPH-76D8}) missing from font(s) DejaVu Sans.
+  return self.func(*args)
+E:\Lib\tkinter\__init__.py:2068: UserWarning: Glyph 26080 (\N{CJK UNIFIED IDEOGRAPH-65E0}) missing from font(s) DejaVu Sans.
+  return self.func(*args)
+📊 已保存点云对比图: 1_pointclouds.png
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 27515 (\N{CJK UNIFIED IDEOGRAPH-6B7B}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 20129 (\N{CJK UNIFIED IDEOGRAPH-4EA1}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 22278 (\N{CJK UNIFIED IDEOGRAPH-5706}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 29615 (\N{CJK UNIFIED IDEOGRAPH-73AF}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 30340 (\N{CJK UNIFIED IDEOGRAPH-7684}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 25345 (\N{CJK UNIFIED IDEOGRAPH-6301}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 32493 (\N{CJK UNIFIED IDEOGRAPH-7EED}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 22270 (\N{CJK UNIFIED IDEOGRAPH-56FE}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 34013 (\N{CJK UNIFIED IDEOGRAPH-84DD}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 33394 (\N{CJK UNIFIED IDEOGRAPH-8272}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 28857 (\N{CJK UNIFIED IDEOGRAPH-70B9}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 31163 (\N{CJK UNIFIED IDEOGRAPH-79BB}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 23545 (\N{CJK UNIFIED IDEOGRAPH-5BF9}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 35282 (\N{CJK UNIFIED IDEOGRAPH-89D2}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 32447 (\N{CJK UNIFIED IDEOGRAPH-7EBF}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 36234 (\N{CJK UNIFIED IDEOGRAPH-8D8A}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 36828 (\N{CJK UNIFIED IDEOGRAPH-8FDC}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 20195 (\N{CJK UNIFIED IDEOGRAPH-4EE3}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 34920 (\N{CJK UNIFIED IDEOGRAPH-8868}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 26174 (\N{CJK UNIFIED IDEOGRAPH-663E}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 33879 (\N{CJK UNIFIED IDEOGRAPH-8457}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 20986 (\N{CJK UNIFIED IDEOGRAPH-51FA}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 29983 (\N{CJK UNIFIED IDEOGRAPH-751F}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 27515 (\N{CJK UNIFIED IDEOGRAPH-6B7B}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 20129 (\N{CJK UNIFIED IDEOGRAPH-4EA1}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 22278 (\N{CJK UNIFIED IDEOGRAPH-5706}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 29615 (\N{CJK UNIFIED IDEOGRAPH-73AF}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 30340 (\N{CJK UNIFIED IDEOGRAPH-7684}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 25345 (\N{CJK UNIFIED IDEOGRAPH-6301}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 32493 (\N{CJK UNIFIED IDEOGRAPH-7EED}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 22270 (\N{CJK UNIFIED IDEOGRAPH-56FE}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 34013 (\N{CJK UNIFIED IDEOGRAPH-84DD}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 33394 (\N{CJK UNIFIED IDEOGRAPH-8272}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 28857 (\N{CJK UNIFIED IDEOGRAPH-70B9}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 31163 (\N{CJK UNIFIED IDEOGRAPH-79BB}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 23545 (\N{CJK UNIFIED IDEOGRAPH-5BF9}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 35282 (\N{CJK UNIFIED IDEOGRAPH-89D2}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 32447 (\N{CJK UNIFIED IDEOGRAPH-7EBF}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 36234 (\N{CJK UNIFIED IDEOGRAPH-8D8A}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 36828 (\N{CJK UNIFIED IDEOGRAPH-8FDC}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 20195 (\N{CJK UNIFIED IDEOGRAPH-4EE3}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 34920 (\N{CJK UNIFIED IDEOGRAPH-8868}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 26174 (\N{CJK UNIFIED IDEOGRAPH-663E}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 33879 (\N{CJK UNIFIED IDEOGRAPH-8457}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 20986 (\N{CJK UNIFIED IDEOGRAPH-51FA}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 29983 (\N{CJK UNIFIED IDEOGRAPH-751F}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:2068: UserWarning: Glyph 27515 (\N{CJK UNIFIED IDEOGRAPH-6B7B}) missing from font(s) DejaVu Sans.
+  return self.func(*args)
+E:\Lib\tkinter\__init__.py:2068: UserWarning: Glyph 20129 (\N{CJK UNIFIED IDEOGRAPH-4EA1}) missing from font(s) DejaVu Sans.
+  return self.func(*args)
+E:\Lib\tkinter\__init__.py:2068: UserWarning: Glyph 22278 (\N{CJK UNIFIED IDEOGRAPH-5706}) missing from font(s) DejaVu Sans.
+  return self.func(*args)
+E:\Lib\tkinter\__init__.py:2068: UserWarning: Glyph 29615 (\N{CJK UNIFIED IDEOGRAPH-73AF}) missing from font(s) DejaVu Sans.
+  return self.func(*args)
+E:\Lib\tkinter\__init__.py:2068: UserWarning: Glyph 30340 (\N{CJK UNIFIED IDEOGRAPH-7684}) missing from font(s) DejaVu Sans.
+  return self.func(*args)
+E:\Lib\tkinter\__init__.py:2068: UserWarning: Glyph 25345 (\N{CJK UNIFIED IDEOGRAPH-6301}) missing from font(s) DejaVu Sans.
+  return self.func(*args)
+E:\Lib\tkinter\__init__.py:2068: UserWarning: Glyph 32493 (\N{CJK UNIFIED IDEOGRAPH-7EED}) missing from font(s) DejaVu Sans.
+  return self.func(*args)
+E:\Lib\tkinter\__init__.py:2068: UserWarning: Glyph 22270 (\N{CJK UNIFIED IDEOGRAPH-56FE}) missing from font(s) DejaVu Sans.
+  return self.func(*args)
+E:\Lib\tkinter\__init__.py:2068: UserWarning: Glyph 34013 (\N{CJK UNIFIED IDEOGRAPH-84DD}) missing from font(s) DejaVu Sans.
+  return self.func(*args)
+E:\Lib\tkinter\__init__.py:2068: UserWarning: Glyph 33394 (\N{CJK UNIFIED IDEOGRAPH-8272}) missing from font(s) DejaVu Sans.
+  return self.func(*args)
+E:\Lib\tkinter\__init__.py:2068: UserWarning: Glyph 28857 (\N{CJK UNIFIED IDEOGRAPH-70B9}) missing from font(s) DejaVu Sans.
+  return self.func(*args)
+E:\Lib\tkinter\__init__.py:2068: UserWarning: Glyph 31163 (\N{CJK UNIFIED IDEOGRAPH-79BB}) missing from font(s) DejaVu Sans.
+  return self.func(*args)
+E:\Lib\tkinter\__init__.py:2068: UserWarning: Glyph 23545 (\N{CJK UNIFIED IDEOGRAPH-5BF9}) missing from font(s) DejaVu Sans.
+  return self.func(*args)
+E:\Lib\tkinter\__init__.py:2068: UserWarning: Glyph 35282 (\N{CJK UNIFIED IDEOGRAPH-89D2}) missing from font(s) DejaVu Sans.
+  return self.func(*args)
+E:\Lib\tkinter\__init__.py:2068: UserWarning: Glyph 32447 (\N{CJK UNIFIED IDEOGRAPH-7EBF}) missing from font(s) DejaVu Sans.
+  return self.func(*args)
+E:\Lib\tkinter\__init__.py:2068: UserWarning: Glyph 36234 (\N{CJK UNIFIED IDEOGRAPH-8D8A}) missing from font(s) DejaVu Sans.
+  return self.func(*args)
+E:\Lib\tkinter\__init__.py:2068: UserWarning: Glyph 36828 (\N{CJK UNIFIED IDEOGRAPH-8FDC}) missing from font(s) DejaVu Sans.
+  return self.func(*args)
+E:\Lib\tkinter\__init__.py:2068: UserWarning: Glyph 20195 (\N{CJK UNIFIED IDEOGRAPH-4EE3}) missing from font(s) DejaVu Sans.
+  return self.func(*args)
+E:\Lib\tkinter\__init__.py:2068: UserWarning: Glyph 34920 (\N{CJK UNIFIED IDEOGRAPH-8868}) missing from font(s) DejaVu Sans.
+  return self.func(*args)
+E:\Lib\tkinter\__init__.py:2068: UserWarning: Glyph 26174 (\N{CJK UNIFIED IDEOGRAPH-663E}) missing from font(s) DejaVu Sans.
+  return self.func(*args)
+E:\Lib\tkinter\__init__.py:2068: UserWarning: Glyph 33879 (\N{CJK UNIFIED IDEOGRAPH-8457}) missing from font(s) DejaVu Sans.
+  return self.func(*args)
+E:\Lib\tkinter\__init__.py:2068: UserWarning: Glyph 20986 (\N{CJK UNIFIED IDEOGRAPH-51FA}) missing from font(s) DejaVu Sans.
+  return self.func(*args)
+E:\Lib\tkinter\__init__.py:2068: UserWarning: Glyph 29983 (\N{CJK UNIFIED IDEOGRAPH-751F}) missing from font(s) DejaVu Sans.
+  return self.func(*args)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 30424 (\N{CJK UNIFIED IDEOGRAPH-76D8}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:73: UserWarning: Glyph 26080 (\N{CJK UNIFIED IDEOGRAPH-65E0}) missing from font(s) DejaVu Sans.
+  plt.savefig(save_name, dpi=150)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 30424 (\N{CJK UNIFIED IDEOGRAPH-76D8}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 26080 (\N{CJK UNIFIED IDEOGRAPH-65E0}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:2068: UserWarning: Glyph 30424 (\N{CJK UNIFIED IDEOGRAPH-76D8}) missing from font(s) DejaVu Sans.
+  return self.func(*args)
+E:\Lib\tkinter\__init__.py:2068: UserWarning: Glyph 26080 (\N{CJK UNIFIED IDEOGRAPH-65E0}) missing from font(s) DejaVu Sans.
+  return self.func(*args)
+📊 已保存持续图对比: 2_pd_circle.png, 3_pd_disk.png
+
+🔢 【特征向量对比】
+圆环样本的 Top-10 寿命: [1.3994703  0.03999693 0.03016853 0.02237315 0.02061754 0.01508966
+ 0.01279481 0.01249421 0.011673   0.01144146]
+圆盘样本的 Top-10 寿命: [0.15281904 0.12663363 0.10119246 0.07545078 0.07467674 0.073915
+ 0.07203333 0.07033131 0.06948587 0.06775001]
+💡 观察: 圆环的第1个特征(最长寿命)约为2.0，而圆盘的第1个特征只有0.1左右，这就是分类器100%准确的数学原因。
+单棵树重要性: [0. 0. 0. 0. 0. 0. 0. 0. 1. 0.]
+
+🎯 分类准确率: 1.000
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:133: UserWarning: Glyph 37325 (\N{CJK UNIFIED IDEOGRAPH-91CD}) missing from font(s) DejaVu Sans.
+  plt.savefig("4_feature_importance.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:133: UserWarning: Glyph 35201 (\N{CJK UNIFIED IDEOGRAPH-8981}) missing from font(s) DejaVu Sans.
+  plt.savefig("4_feature_importance.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:133: UserWarning: Glyph 24615 (\N{CJK UNIFIED IDEOGRAPH-6027}) missing from font(s) DejaVu Sans.
+  plt.savefig("4_feature_importance.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:133: UserWarning: Glyph 26435 (\N{CJK UNIFIED IDEOGRAPH-6743}) missing from font(s) DejaVu Sans.
+  plt.savefig("4_feature_importance.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:133: UserWarning: Glyph 38543 (\N{CJK UNIFIED IDEOGRAPH-968F}) missing from font(s) DejaVu Sans.
+  plt.savefig("4_feature_importance.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:133: UserWarning: Glyph 26426 (\N{CJK UNIFIED IDEOGRAPH-673A}) missing from font(s) DejaVu Sans.
+  plt.savefig("4_feature_importance.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:133: UserWarning: Glyph 26862 (\N{CJK UNIFIED IDEOGRAPH-68EE}) missing from font(s) DejaVu Sans.
+  plt.savefig("4_feature_importance.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:133: UserWarning: Glyph 26519 (\N{CJK UNIFIED IDEOGRAPH-6797}) missing from font(s) DejaVu Sans.
+  plt.savefig("4_feature_importance.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:133: UserWarning: Glyph 29305 (\N{CJK UNIFIED IDEOGRAPH-7279}) missing from font(s) DejaVu Sans.
+  plt.savefig("4_feature_importance.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:133: UserWarning: Glyph 24449 (\N{CJK UNIFIED IDEOGRAPH-5F81}) missing from font(s) DejaVu Sans.
+  plt.savefig("4_feature_importance.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:133: UserWarning: Glyph 21069 (\N{CJK UNIFIED IDEOGRAPH-524D}) missing from font(s) DejaVu Sans.
+  plt.savefig("4_feature_importance.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:133: UserWarning: Glyph 20010 (\N{CJK UNIFIED IDEOGRAPH-4E2A}) missing from font(s) DejaVu Sans.
+  plt.savefig("4_feature_importance.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:133: UserWarning: Glyph 29615 (\N{CJK UNIFIED IDEOGRAPH-73AF}) missing from font(s) DejaVu Sans.
+  plt.savefig("4_feature_importance.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:133: UserWarning: Glyph 23551 (\N{CJK UNIFIED IDEOGRAPH-5BFF}) missing from font(s) DejaVu Sans.
+  plt.savefig("4_feature_importance.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:133: UserWarning: Glyph 21629 (\N{CJK UNIFIED IDEOGRAPH-547D}) missing from font(s) DejaVu Sans.
+  plt.savefig("4_feature_importance.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:133: UserWarning: Glyph 24207 (\N{CJK UNIFIED IDEOGRAPH-5E8F}) missing from font(s) DejaVu Sans.
+  plt.savefig("4_feature_importance.png", dpi=150)
+e:\BaiduNetdiskDownload\计算拓扑＆TDA\github仓库\代码尝试\test.py:133: UserWarning: Glyph 21495 (\N{CJK UNIFIED IDEOGRAPH-53F7}) missing from font(s) DejaVu Sans.
+  plt.savefig("4_feature_importance.png", dpi=150)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 37325 (\N{CJK UNIFIED IDEOGRAPH-91CD}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 35201 (\N{CJK UNIFIED IDEOGRAPH-8981}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 24615 (\N{CJK UNIFIED IDEOGRAPH-6027}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 26435 (\N{CJK UNIFIED IDEOGRAPH-6743}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 38543 (\N{CJK UNIFIED IDEOGRAPH-968F}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 26426 (\N{CJK UNIFIED IDEOGRAPH-673A}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 26862 (\N{CJK UNIFIED IDEOGRAPH-68EE}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 26519 (\N{CJK UNIFIED IDEOGRAPH-6797}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 29305 (\N{CJK UNIFIED IDEOGRAPH-7279}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 24449 (\N{CJK UNIFIED IDEOGRAPH-5F81}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 21069 (\N{CJK UNIFIED IDEOGRAPH-524D}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 20010 (\N{CJK UNIFIED IDEOGRAPH-4E2A}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 29615 (\N{CJK UNIFIED IDEOGRAPH-73AF}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 23551 (\N{CJK UNIFIED IDEOGRAPH-5BFF}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 21629 (\N{CJK UNIFIED IDEOGRAPH-547D}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 24207 (\N{CJK UNIFIED IDEOGRAPH-5E8F}) missing from font(s) DejaVu Sans.
+  func(*args)
+E:\Lib\tkinter\__init__.py:862: UserWarning: Glyph 21495 (\N{CJK UNIFIED IDEOGRAPH-53F7}) missing from font(s) DejaVu Sans.
+  func(*args)
+📊 已保存特征重要性图: 4_feature_importance.png
+💡 第1个特征(最长寿命)的重要性: 0.110，它几乎独立承担了全部分类任务。

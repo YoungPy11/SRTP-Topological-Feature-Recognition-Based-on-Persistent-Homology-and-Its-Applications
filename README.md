@@ -49,7 +49,11 @@ pip install -r requirements.txt
 
 项目组的理论学习笔记位于 `docs/` 目录，目前包含：
 
-- **CTDA 阅读笔记（第二章 & 第三章）**：《Computational Topology for Data Analysis》中单纯复形、Čech/Rips 复形、同调群、滤过、持续同调、持续图、持续模、PL-函数等核心理论的整理。
+- **CTDA阅读笔记理论部分整合**：《Computational Topology for Data Analysis》中单纯复形、Čech/Rips 复形、同调群、滤过、持续同调、持续图、持续模、PL-函数等核心理论的整理。这部分基本思路和框架由人类提供，细节补全由deepseek完成，人类大致检查了deepseek的工作，质量尚可。建议最好还是配合教材原著食用。
+- **CTDA第三章算法部分**：主要是第三章的五个算法，完全由deepseek整理。质量欠佳，建议阅读教材。
+- **CTDA理论部分重点梳理（手写）**：《CTDA阅读笔记理论部分整合》的进一步精简和总结，建议学习完后再酌情参考。
+- **CTDA算法部分重点梳理（手写）**：抄书并稍作梳理，同样，酌情参考。
+- **各个时间点的总结与规划**:参考txt文件。
 
 ## 进度安排
 
