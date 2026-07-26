@@ -1,21 +1,22 @@
-import numpy as np
-import ripser
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
+# ---------- 0. 导入必要的库 ----------
+import numpy as np  #数值计算基础库，主要用于数组、矩阵计算
+import ripser #risper是持续同调的计算库，主要用于将点云数据转化为持续图（PD）,这里主要是通过Vietoris-Rips复形实现
+import matplotlib.pyplot as plt #可视化库，主要用于绘制点云、持续图等
+from mpl_toolkits.mplot3d import Axes3D #用于绘制3D散点图
+from sklearn.ensemble import RandomForestClassifier #随机森林分类器，用于对点云数据进行分类
+from sklearn.model_selection import train_test_split #用于划分训练集和测试集
+from sklearn.metrics import accuracy_score #用于计算分类准确率
 
 # ---------- 1. 生成数据（含可视化） ----------
-def generate_circle(n_points=100, radius=1.0, noise=0.05):
-    theta = np.random.uniform(0, 2*np.pi, n_points)
-    x = radius * np.cos(theta) + np.random.normal(0, noise, n_points)
-    y = radius * np.sin(theta) + np.random.normal(0, noise, n_points)
-    z = np.random.normal(0, noise, n_points)
-    return np.column_stack((x, y, z))
+def generate_circle(n_points=100, radius=1.0, noise=0.05): #这是一个用于生成一个含有高斯噪声的圆环点云的函数
+    theta = np.random.uniform(0, 2*np.pi, n_points) #先生成均匀分布的角度，即进行n_points=100次相互独立的、服从同一分布(均匀分布)的试验，把结果打包成一个数组，作为点云中每个点的角度参数
+    x = radius * np.cos(theta) + np.random.normal(0, noise, n_points) #然后根据角度参数计算每个点的x坐标，并加入高斯噪声
+    y = radius * np.sin(theta) + np.random.normal(0, noise, n_points) #然后根据角度参数计算每个点的y坐标，并加入高斯噪声
+    z = np.random.normal(0, noise, n_points) #然后为每个点生成z坐标，并加入高斯噪声
+    return np.column_stack((x, y, z)) #将x、y、z坐标组合成一个n_points行3列的数组，表示点云中每个点的三维坐标
 
-def generate_disk(n_points=100, radius=1.0, noise=0.05):
-    r = radius * np.sqrt(np.random.uniform(0, 1, n_points))
+def generate_disk(n_points=100, radius=1.0, noise=0.05):#这是一个用于生成一个含有高斯噪声的圆盘点云的函数
+    r = radius * np.sqrt(np.random.uniform(0, 1, n_points)) #注意这里采用的随机变量是均匀分布随机变量的平方根，这样可以保证点在圆盘内依面积均匀分布
     theta = np.random.uniform(0, 2*np.pi, n_points)
     x = r * np.cos(theta) + np.random.normal(0, noise, n_points)
     y = r * np.sin(theta) + np.random.normal(0, noise, n_points)
@@ -74,7 +75,7 @@ def plot_persistence_diagram(dgm, title, save_name):
     plt.show()
 
 # 计算两个样本的持续图
-dgm_circle = ripser.ripser(circle_sample, maxdim=1)['dgms']
+dgm_circle = ripser.ripser(circle_sample, maxdim=1)['dgms']#risper.risper函数计算点云的持续同调，返回一个字典，其中'dgms'键对应的值是一个列表，包含每个维度的持续图（PD）。这里我们只计算到1维(maxdim=1)，即H0和H1。
 dgm_disk = ripser.ripser(disk_sample, maxdim=1)['dgms']
 
 plot_persistence_diagram(dgm_circle, "圆环的持续图 (蓝色点离对角线越远代表环越显著)", "2_pd_circle.png")
@@ -82,12 +83,12 @@ plot_persistence_diagram(dgm_disk, "圆盘的持续图 (无显著远离对角线
 print("📊 已保存持续图对比: 2_pd_circle.png, 3_pd_disk.png")
 
 # ---------- 4. 查看“特征提取”这一步的具体数据 ----------
-def compute_top_persistences(points, dim=1, top_k=10):
-    diagrams = ripser.ripser(points, maxdim=dim)['dgms']
+def compute_top_persistences(points, dim=1, top_k=10):#向量化特征提取函数，用于将点云图转化为top_k寿命这一向量化的特征，内部包含了调用risper.risper将点云计算成为PD
+    diagrams = ripser.ripser(points, maxdim=dim)['dgms']#调用risper.risper将点云计算成为PD
     dgm = diagrams[dim]
     if len(dgm) == 0:
         return np.zeros(top_k)
-    # 过滤掉无穷大（例如H1通常都是有限的，但H0有inf）
+    # 过滤掉无穷大（例如H1通常都是有限的，但H0有infinity）
     finite_pers = [(b,d) for b,d in dgm if not np.isinf(d)]
     pers = sorted([d-b for b,d in finite_pers], reverse=True)[:top_k]
     if len(pers) < top_k:
@@ -104,22 +105,22 @@ print("💡 观察: 圆环的第1个特征(最长寿命)约为2.0，而圆盘的
 
 # ---------- 5. 批量生成数据集并训练 ----------
 n_samples_per_class = 50
-circle_data = [generate_circle(n_points=200) for _ in range(n_samples_per_class)]
-disk_data   = [generate_disk(n_points=200)   for _ in range(n_samples_per_class)]
-X_data = circle_data + disk_data
-y_label = np.array([1]*n_samples_per_class + [0]*n_samples_per_class)
+circle_data = [generate_circle(n_points=200) for _ in range(n_samples_per_class)]#生成50个圆环点云样本，每个样本包含200个点
+disk_data   = [generate_disk(n_points=200)   for _ in range(n_samples_per_class)]#生成50个圆盘点云样本，每个样本包含200个点
+X_data = circle_data + disk_data#将两个类别的点云数据合并，共100个样本，每个样本是一个200x3的数组
+y_label = np.array([1]*n_samples_per_class + [0]*n_samples_per_class)#生成标签，圆环为1，圆盘为0
 
-X_features = np.array([compute_top_persistences(pts, dim=1, top_k=10) for pts in X_data])
-X_train, X_test, y_train, y_test = train_test_split(X_features, y_label, test_size=0.3, random_state=42)
+X_features = np.array([compute_top_persistences(pts, dim=1, top_k=10) for pts in X_data])#调用之前写好的特征提取函数，将X_data中的每个点云样本转化为Top-10寿命的特征向量，形成一个二维数组，每行对应一个样本，每列对应一个特征
+X_train, X_test, y_train, y_test = train_test_split(X_features, y_label, test_size=0.3, random_state=42)#将数据集划分为训练集和测试集，30%的数据用于测试，70%用于训练，随机种子为42以保证可重复性
 
-clf = RandomForestClassifier(n_estimators=100,max_features=None, random_state=42)
-from sklearn.tree import DecisionTreeClassifier
+clf = RandomForestClassifier(n_estimators=100,max_features=None, random_state=42)#创建一个随机森林分类器对象，设置树的数量为100，max_features=None表示每棵树在分裂时考虑所有特征，random_state=42保证结果可重复
+from sklearn.tree import DecisionTreeClassifier#导入决策树分类器，主要用来调试诊断，因为单棵树要比随机森林更加透明
 tree = DecisionTreeClassifier(random_state=42)
 tree.fit(X_train, y_train)
 print("单棵树重要性:", tree.feature_importances_)
 clf.fit(X_train, y_train)
 y_pred = clf.predict(X_test)
-acc = accuracy_score(y_test, y_pred)
+acc = accuracy_score(y_test, y_pred)#计算分类准确率
 
 print(f"\n🎯 分类准确率: {acc:.3f}")
 
