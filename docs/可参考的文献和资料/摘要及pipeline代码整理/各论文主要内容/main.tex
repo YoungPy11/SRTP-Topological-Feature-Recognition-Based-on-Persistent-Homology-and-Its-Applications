@@ -1,0 +1,292 @@
+% ============================================================
+% 各论文主要内容与创新点 —— SRTP 参考整理
+% 编译: XeLaTeX
+% ============================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[UTF8]{ctex}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{titlesec}
+
+\title{\textbf{持续同调（TDA）参考资料\\主要内容与创新点整理}}
+\author{SRTP 项目组}
+\date{2026 年 8 月}
+
+\hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+% ============================================================
+\section{Paper 1: Persistent Homology: A Pedagogical Introduction with Biological Applications}
+% ============================================================
+
+\textbf{来源：} arXiv:2505.06583v1 [math.AT], 2025年5月 \\
+\textbf{作者：} Aurelie Jodelle Kemme, Collins A. Agyingi (University of South Africa)
+
+\subsection*{主要内容}
+本文是一篇面向初学者的持久同调（Persistent Homology, PH）教学论文，系统性地介绍了从拓扑学基础到实际应用的全流程：
+
+\begin{enumerate}[nosep]
+  \item \textbf{数学预备知识}：拓扑空间、同胚、同伦、度量空间、点云表示；
+  \item \textbf{单纯复形与同调}：抽象单纯复形、链复形、边界映射、同调群、Betti 数；
+  \item \textbf{持久同调核心}：过滤（filtration）、~Čech 复形与 Vietoris-Rips 复形、条形码（barcode）与持久图（persistence diagram）；
+  \item \textbf{实际应用案例}：以 3-1 超螺旋 DNA 结构为对象，从 PDB 坐标提取 $\to$ 点云构建 $\to$ VR 过滤 $\to$ 持久图 $\to$ Betti 数计算，完整演示了 PH 的工作流程。
+\end{enumerate}
+
+\subsection*{核心创新点}
+\begin{itemize}[nosep]
+  \item \textbf{低门槛系统性教学}：面向无代数拓扑背景的读者，从直观例子（咖啡杯与甜甜圈）出发逐步过渡到严格定义；
+  \item \textbf{完整可复现的生物学案例}：提供了从蛋白质结构数据库下载坐标到计算 Betti 数的完整代码，采用 Python 的 Ripser 和 GUDHI 库；
+  \item \textbf{强调 PH 的互补性}：明确指出 PH 与传统 ML 方法（监督/无监督/强化学习）在捕获全局结构方面的互补关系。
+\end{itemize}
+
+\subsection*{对 SRTP 的参考价值}
+\begin{itemize}[nosep]
+  \item 可作为 CTDA 阅读笔记的平行教材，交叉验证理论理解的正确性；
+  \item DNA 结构分析的 pipeline 结构与 test.py 中的范式完全一致，可作为"跨领域应用案例"引入结题报告；
+  \item 局限性：仅涉及 H$_0$ 和 H$_1$，未涉及 H$_2$（空腔），对 3D 拓扑识别目标支撑有限。
+\end{itemize}
+
+
+% ============================================================
+\section{Paper 2: Topology-Informed Jet Tagging using Persistent Homology}
+% ============================================================
+
+\textbf{来源：} arXiv:2601.01450v1 [hep-ph], 2026年1月 \\
+\textbf{作者：} Saurav Mittal (CDAC, Pune, India)
+
+\subsection*{主要内容}
+本文提出了一种基于持久同调的喷注标记（jet tagging）方法，用于区分夸克和胶子喷注：
+
+\begin{enumerate}[nosep]
+  \item \textbf{喷注点云表示}：将每个喷注的粒子成分表示为三维特征空间中的点云 $X = \{x_i\}_{i=1}^N \subset \mathbb{R}^3$，特征为相对横动量 $p_T^{\text{rel}}$、赝快度 $\eta^{\text{rot}}$、方位角 $\phi^{\text{rot}}$；
+  \item \textbf{持久同调计算}：采用 Vietoris-Rips 过滤计算 H$_0$（连通分量）和 H$_1$（环状结构）的持久图；
+  \item \textbf{持久图像（Persistence Image）}：将持久图转化为持久图像（$40\times40$ 网格，高斯核 $\sigma=0.001$），作为固定维度特征；
+  \item \textbf{CNN 分类}：使用三个卷积块 + 批归一化 + ReLU 的 CNN 对 H$_0$、H$_1$ 及组合持久图像进行二分类。
+\end{enumerate}
+
+\subsection*{核心创新点}
+\begin{itemize}[nosep]
+  \item \textbf{首次量化 H$_1$ 在喷注分类中的独立作用}：发现 H$_0$ 和 H$_1$ 的持久图像单独使用时具有相当的判别能力（AUC 分别为 0.76 和 0.75）；
+  \item \textbf{验证了环状拓扑特征在喷注子结构中的信息价值}：表明 H$_1$ 编码了传统喷注标记方法未利用的物理信息；
+  \item \textbf{消融实验设计}：比较了 H$_0$ only、H$_1$ only、H$_0$+H$_1$ 三种输入组合的性能差异。
+\end{itemize}
+
+\subsection*{对 SRTP 的参考价值}
+\begin{itemize}[nosep]
+  \item Pipeline 与 test.py 高度同构（点云 $\to$ VR 过滤 $\to$ PD $\to$ 向量化 $\to$ ML），是"Top-K 寿命 + 随机森林"向"持久图像 + CNN"升级的直接参考；
+  \item 特征空间构造思路（用物理意义更强的特征而非原始坐标）对 ModelNet40 处理有启发；
+  \item 局限性：粒子物理领域，应用场景与 SRTP 差异较大。
+\end{itemize}
+
+
+% ============================================================
+\section{Paper 3: Learning Significant Persistent Homology Features for 3D Shape Understanding}
+% ============================================================
+
+\textbf{来源：} arXiv:2602.14228v1 [cs.CV], 2026年2月 \\
+\textbf{作者：} Prachi Kudeshia, Jiju Poovvancheri (Saint Mary's University, Canada)
+
+\subsection*{主要内容}
+本文针对 3D 点云形状理解，提出了拓扑增强数据集和基于深度学习的显著拓扑特征选择方法：
+
+\begin{itemize}[nosep]
+  \item \textbf{拓扑增强数据集}：为 ModelNet40 和 ShapeNet 构建了附带 H$_1$ 和 H$_2$ 持久图的数据集（ModelNet40-PD, ShapeNet-PD），计算耗时超过 860 小时；
+  \item \textbf{TopoGAT 架构}：一种基于图注意力网络（GAT）的三分支网络，同时学习点云的几何特征、H$_1$ 拓扑特征和 H$_2$ 拓扑特征；
+  \item \textbf{显著特征选择机制}：通过回归头预测每个持久图的阈值，利用 sigmoid 软掩码进行可微过滤，结合拓扑损失函数（Wasserstein 距离 + 持久熵 + 缩减率）进行端到端学习；
+  \item \textbf{下游任务验证}：在分类（ModelNet40）和部件分割（ShapeNet）上验证，TopoGAT 选择后的显著特征比全部特征或传统统计筛选方法表现更好。
+\end{itemize}
+
+\subsection*{核心创新点}
+\begin{itemize}[nosep]
+  \item \textbf{首个面向 3D 点云的拓扑增强基准数据集}：解决了 PH 计算成本高、难以在训练时实时生成的问题；
+  \item \textbf{TopoGAT 可学习显著特征选择}：替代了传统 Top-K 固定截断或统计置信带方法，能根据数据自适应选择最相关的拓扑特征；
+  \item \textbf{三支路 + 分类引导的回归}：分类头的预测概率指导回归头为不同类别生成特异性阈值；
+  \item \textbf{复合拓扑损失}：结合 Wasserstein 距离损失（保持分布）、持久熵损失（防止过度简化）和缩减率损失（控制保留数量），三者权重可学习。
+\end{itemize}
+
+\subsection*{对 SRTP 的参考价值}
+\begin{itemize}[nosep]
+  \item 与 SRTP 研究方向（3D 点云 + PH + 深度学习 + 分类/分割）\textbf{最直接相关}；
+  \item 可直接使用其预计算的拓扑增强数据集，节省大量预处理时间；
+  \item TopoGAT 的"学习筛选显著特征"思路为第二阶段"设计自己的 pipeline"提供了参考方案。
+\end{itemize}
+
+
+% ============================================================
+\section{Paper 4: A Persistent Homology Design Space for 3D Point Cloud Deep Learning}
+% ============================================================
+
+\textbf{来源：} arXiv:2604.04299v1 [cs.CV], 2026年4月 \\
+\textbf{作者：} Prachi Kudeshia, Jiju Poovvancheri 等 (Saint Mary's University)
+
+\subsection*{主要内容}
+本文提出了一个统一的 3DPHDL（Persistent Homology driven learning for 3D Point Clouds）设计空间，系统化地梳理了 PH 与 3D 深度学习结合的各类设计选择：
+
+\begin{enumerate}[nosep]
+  \item \textbf{标准 PHML Pipeline}：复杂构造（VR/Čech/Alpha/Cubical/Witness/Flood/SSC）$\to$ 过滤（距离/函数/学习）$\to$ PH 计算 $\to$ 向量化（PI/PL/Betti 曲线/PersLay）$\to$ 神经网络架构 $\to$ 预测任务；
+  \item \textbf{六个 PH 注入点（IP1--IP6）}：
+    \begin{itemize}[nosep]
+      \item IP1：PH 引导的采样与分块（拓扑感知下采样）；
+      \item IP2：PH 感知的邻域图与卷积（拓扑重要性加权边、持久感知池化）；
+      \item IP3：训练动态与优化（拓扑损失、PH 触发的更新调度）；
+      \item IP4：自监督与数据增强（PH 保持的正例 / PH 破坏的负例）；
+      \item IP5：输出校准与标签空间（预测掩码的 PH 验证、拓扑不确定性）；
+      \item IP6：网络自身的隐式 PH（神经持久性、特征图 PH、持久 Laplacian 正则化）。
+    \end{itemize}
+  \item \textbf{系统实验对比}：在 PointNet、DGCNN、Point Transformer 三个 backbone 上，系统比较了 PD、PI、PL 三种向量化方法在分类和分割任务上的效果。
+\end{enumerate}
+
+\subsection*{核心创新点}
+\begin{itemize}[nosep]
+  \item \textbf{首个 3DPHDL 设计空间框架}：将 PH+DL 的所有设计选择系统化，超越了"PH 仅作为辅助特征"的狭隘视角；
+  \item \textbf{六维注入点体系}：将 PH 从"旁路特征"提升为"结构归纳偏置"，可渗透到数据处理、架构设计、优化训练、自监督、输出校准等各个环节；
+  \item \textbf{全面的实验分析}：比较不同复形构造的计算复杂度（图 8）、拓扑稳定性（图 9）、以及不同向量化方法的性能/开销 trade-off（表 4、表 5）。
+\end{itemize}
+
+\subsection*{对 SRTP 的参考价值}
+\begin{itemize}[nosep]
+  \item 为"设计自己的 pipeline"提供了\textbf{最高级别的框架性指导}——完整的"菜单"供选择；
+  \item 六个注入点为 SRTP 创新提供了多个可能方向（如 PH 引导采样、拓扑感知邻域图）；
+  \item 实验结论可作为选择 backbone 和向量化方法的直接依据（PL 性能最佳且参数少）；
+  \item 论文结构（问题$\to$设计空间$\to$系统实验$\to$Trade-off 分析）适合用作结题报告的组织框架。
+\end{itemize}
+
+
+% ============================================================
+\section{Paper 5: Adaptive Topological Feature via Persistent Homology: Filtration Learning for Point Clouds}
+% ============================================================
+
+\textbf{来源：} NeurIPS 2023 \\
+\textbf{作者：} Naoki Nishikawa (东京大学), Yuichi Ike (九州大学), Kenji Yamanishi (东京大学)
+
+\subsection*{主要内容}
+本文提出了一种可学习的加权过滤框架，通过神经网络为点云中的每个点自适应地学习权重，从而获得任务相关的拓扑特征：
+
+\begin{enumerate}[nosep]
+  \item \textbf{加权过滤（Weighted Filtration）}：对点云 $X = \{x_1,\ldots,x_N\}$，定义权重函数 $w: X \to \mathbb{R}$，构造加权 Rips 过滤 $R[X, w]$，使不同半径的球以不同速率膨胀；
+  \item \textbf{等距不变网络架构}：基于距离矩阵和 DeepSets 架构设计权重函数 $f_\theta(X, x)$，满足对任意等距变换 $T$ 有 $f_\theta(TX, Tx) = f_\theta(X, x)$；
+  \item \textbf{两阶段训练}：第一阶段训练 DNN 特征提取器，第二阶段固定 DNN 并联合训练拓扑特征提取器和分类器，避免联合优化不稳定；
+  \item \textbf{理论保证}：证明了任意连续权函数可通过两个有限维特征向量的组合逼近（Theorem 4.1）。
+\end{enumerate}
+
+\subsection*{核心创新点}
+\begin{itemize}[nosep]
+  \item \textbf{首次提出点云数据的可学习过滤}：在此之前，过滤学习仅在图数据上实现，因点云缺乏邻接结构且需要等距不变性，面临根本性挑战；
+  \item \textbf{等距不变性保证}：利用距离矩阵而非坐标实现严格的等距不变性，使 PH 特征对旋转、平移、反射不敏感；
+  \item \textbf{有限维逼近定理}：为基于距离矩阵的架构提供了理论基础，证明其表达能力足够；
+  \item \textbf{两阶段训练策略}：解决了 PH 特征与 DNN 特征联合优化不稳定的问题。
+\end{itemize}
+
+\subsection*{对 SRTP 的参考价值}
+\begin{itemize}[nosep]
+  \item 可学习过滤是\textbf{核心创新方向}——从"固定 VR 过滤"到"自适应过滤"，学术价值大幅提升；
+  \item 等距不变性与 SRTP 目标"处理三维物体旋转不变性"直接对应；
+  \item 与 TopoGAT（2602）正交：TopoGAT 关注"选择哪些特征重要"，本文关注"如何让过滤本身可学习"，两者可组合；
+  \item 局限性：计算成本高（每次训练约 7 小时），在大数据集上扩展性有限。
+\end{itemize}
+
+
+% ============================================================
+\section{Paper 6: Topology and Data}
+% ============================================================
+
+\textbf{来源：} Bulletin of the American Mathematical Society, 46(2):255–308, 2009 \\
+\textbf{作者：} Gunnar Carlsson (Stanford University)
+
+\subsection*{主要内容}
+这是 TDA 领域最经典的奠基性综述之一，由 TDA 创始人 Gunnar Carlsson 撰写，阐述了拓扑学在数据分析中的方法论价值：
+
+\begin{enumerate}[nosep]
+  \item \textbf{现代数据挑战}：高维性、坐标人工性、度量不自然、噪声大、缺失多——传统方法难以应对；
+  \item \textbf{拓扑学的四个关键优势}：
+    \begin{itemize}[nosep]
+      \item 提供\textbf{定性信息}（如连通性、环结构），而非仅定量信息；
+      \item 对\textbf{度量选择不敏感}，适用于度量不明确的场景（如生物学）；
+      \item \textbf{坐标无关性}，不依赖于特定坐标系；
+      \item \textbf{函子性（Functoriality）}——通过参数变化下的连续映射关系获得更丰富的信息。
+    \end{itemize}
+  \item \textbf{聚类分析}：探讨了聚类的模糊性，以及如何用函子性框架处理多参数聚类问题；
+  \item \textbf{持续同调}：介绍了持久同调的基本思想，强调"摘要（summaries）比单参数选择更有价值"；
+  \item \textbf{Mapper 算法}：介绍了基于 Reeb 图的 Mapper 算法。
+\end{enumerate}
+
+\subsection*{核心创新点}
+\begin{itemize}[nosep]
+  \item \textbf{奠定了 TDA 的哲学基础}：系统阐述了"为什么拓扑学对数据分析有用"这一核心问题；
+  \item \textbf{引入函子性思想}：将代数拓扑中的函子性引入数据分析，为多尺度分析和多参数分析提供了理论框架；
+  \item \textbf{开创性工作}：提出了持久同调在数据分析中的应用范式，影响深远（引用量极高）。
+\end{itemize}
+
+\subsection*{对 SRTP 的参考价值}
+\begin{itemize}[nosep]
+  \item 为结题报告的\textbf{引言/背景部分}提供了思想层面的深度——"为什么 TDA 有效"；
+  \item 作为 TDA 领域引用量最高的论文，可增强结题报告的学术规范性；
+  \item 局限性：出版于 2009 年，未涉及深度学习等最新进展，更多是方法论层面的指导。
+\end{itemize}
+
+
+% ============================================================
+\section{Paper 7: Extracting Insights from the Shape of Complex Data Using Topology}
+% ============================================================
+
+\textbf{来源：} Scientific Reports, 3:1236, 2013 \\
+\textbf{作者：} P. Y. Lum, G. Singh, A. Lehman, G. Carlsson 等 (Ayasdi Inc. \& Stanford)
+
+\subsection*{主要内容}
+本文展示了基于 Mapper 算法的 TDA 方法在三个真实世界数据集上的应用：
+
+\begin{enumerate}[nosep]
+  \item \textbf{方法概述}：基于广义 Reeb 图的拓扑数据分析方法，输入为距离度量、过滤函数（filter function）和分辨率参数，输出为网络状表示；
+  \item \textbf{乳腺癌基因表达数据}：分析 NKI 和 GSE2034 两个数据集，发现了传统方法（如 PCA、聚类分析）未能识别的患者亚群；
+  \item \textbf{美国众议院投票数据}：分析 20 年间的投票行为，揭示了党派凝聚力和分裂模式的演变；
+  \item \textbf{NBA 球员数据}：根据球员表现数据识别出 13 种不同的打球风格；
+  \item \textbf{多网络对应分析}：创新性地实现了跨数据集的网络形状比较。
+\end{enumerate}
+
+\subsection*{核心创新点}
+\begin{itemize}[nosep]
+  \item \textbf{探索性数据分析范式}：提出了一种无需先验假设的数据探索方法，不同于传统假设驱动的分析方法；
+  \item \textbf{形状即信息}：强调"环"和"光晕/分支"等拓扑模式如何揭示数据中的隐藏子群；
+  \item \textbf{跨网络比较}：提出了在多个网络间建立对应关系的方法，用于跨时间、跨数据集或跨尺度的比较分析；
+  \item \textbf{工业级应用验证}：三个领域（医学、政治、体育）的案例验证了 TDA 的实际应用价值。
+\end{itemize}
+
+\subsection*{对 SRTP 的参考价值}
+\begin{itemize}[nosep]
+  \item 可作为结题报告\textbf{"应用前景"章节}的典型案例；
+  \item 了解 Mapper 思路有助于在第三阶段"高维抽象数据"中思考是否需要以 Mapper 补充 PH；
+  \item 局限性：使用 Mapper 而非 PH，与 SRTP 核心技术路线（PH+ML）不直接相关。
+\end{itemize}
+
+
+% ============================================================
+\section*{总结：各论文在 SRTP 中的定位}
+% ============================================================
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{p{2.5cm}p{4cm}p{4.5cm}}
+\toprule
+\textbf{论文} & \textbf{类型} & \textbf{SRTP 定位} \\
+\midrule
+Paper 1 (2505) & 教学入门 & 理论补充 + 跨领域应用案例 \\
+Paper 2 (2601) & 应用研究 & Pipeline 升级参考（Top-K $\to$ PI + CNN） \\
+Paper 3 (2602) & 方法研究 & 最直接相关——TopoGAT + 拓扑增强数据集 \\
+Paper 4 (2604) & 综述/框架 & 最高级别框架指导——设计空间 + 六个注入点 \\
+Paper 5 (NeurIPS) & 方法创新 & 核心创新方向——可学习过滤 \\
+Paper 6 (Carlsson) & 奠基综述 & 思想基础——结题报告引言引用 \\
+Paper 7 (srep01236) & 应用案例 & 应用前景展示 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\end{document}
