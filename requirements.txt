@@ -1,14 +1,21 @@
+# ============================================================
+# SRTP · 基于持续同调的拓扑特征识别及其应用
+# 核心依赖：src/ 下的 PH 工具模块与 5 个参考论文 pipeline 复现
+# ============================================================
+
 # Core TDA libraries
-gudhi>=3.8
-ripser>=0.6
-scikit-tda>=0.1
+ripser>=0.6.4
+persim>=0.3.6
+# gudhi 可选：本机 Windows 应用控制策略会拦截其原生 DLL（当前代码未直接调用）
+# gudhi>=3.9.0
 
 # Data & computation
-numpy>=1.24
-scipy>=1.10
-matplotlib>=3.7
-scikit-learn>=1.3
+numpy>=1.24.0
+scipy>=1.10.0
+matplotlib>=3.7.0
+scikit-learn>=1.2.0
 pandas>=2.0
+tqdm>=4.65.0
 
 # Jupyter
 jupyter>=1.0
@@ -16,4 +23,6 @@ ipykernel>=6.0
 
 # Visualization (optional)
 plotly>=5.0
-persim>=0.3
+
+# 参考复现中 paper2/3/4/5 的 GNN 部分需要（可选，约 2GB）：
+# torch>=2.0.0

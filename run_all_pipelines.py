@@ -25,6 +25,7 @@ from pathlib import Path
 
 SRC_DIR = Path(__file__).parent / "src"
 sys.path.insert(0, str(SRC_DIR))
+# 各 pipeline 脚本自身输出到 <仓库根>/results/（见各脚本 RESULTS_DIR）
 
 
 def run_paper1():

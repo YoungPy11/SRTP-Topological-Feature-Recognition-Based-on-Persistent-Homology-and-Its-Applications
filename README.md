@@ -36,14 +36,20 @@ pip install -r requirements.txt
 基于持续同调的拓扑特征识别及其应用/
 ├── README.md              # 项目说明
 ├── requirements.txt       # Python 依赖
+├── run_all_pipelines.py   # 批量运行参考论文 pipeline 复现（--paper 1~5 / all）
 ├── .gitignore             # Git 忽略规则
 ├── LICENSE                # MIT 许可证
-├── docs/                  # 理论笔记（LaTeX / PDF / Markdown）
+├── docs/                  # 理论笔记（LaTeX / PDF / Markdown）与参考资料
+├── src/                   # 核心代码：ph_pipeline（PH 工具模块）+ 5 篇参考论文的 pipeline 复现
 ├── notebooks/             # Jupyter Notebook 实验
-├── src/                   # 核心代码模块
 ├── data/                  # 数据集
-└── results/               # 实验结果（图表、日志）
+└── results/               # 实验结果（图表、日志），含参考复现的历史结果
 ```
+
+### 核心代码（`src/`）
+
+- **`ph_pipeline.py`**：持续同调工具模块，含点云生成（圆/圆盘/环面/球面）、PH 计算（ripser）、四种向量化方法（top-k 持续特征 / 持续图像 / 持续景观 / Betti 曲线）、显著特征选择（TopoGAT 软掩码等）、加权 VR 复形、B/W 距离评估、批量特征提取与数据集划分。
+- **`pipeline_paper1~5_*.py`**：五篇参考论文的 pipeline 复现（DNA 结构分析、喷注标记、TopoGAT、3DPHDL、过滤学习）。其中 paper2/3/4/5 的 GNN 部分需要 `torch`（requirements.txt 中默认注释，约 2GB，按需安装）。
 
 ## 理论笔记
 
