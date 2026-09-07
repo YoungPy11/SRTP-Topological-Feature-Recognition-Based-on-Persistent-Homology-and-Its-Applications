@@ -648,3 +648,58 @@ def train_test_split_ph(
         point_clouds, labels, method=method, **kwargs
     )
     return tts(X_features, y_labels, test_size=test_size, random_state=random_state)
+
+
+# ============================================================
+# 补充生成器：多空腔结构（阶段 1 子任务 A，验证 H2 空腔特征）
+# ============================================================
+
+def generate_porous_block(
+    n_points: int = 2000,
+    n_cavities: int = 4,
+    box_size: float = 2.0,
+    cavity_radius: float = 0.35,
+    noise: float = 0.02
+) -> np.ndarray:
+    """生成立方体内部挖多个球形空腔的点云（有 H2 空腔特征）。
+
+    采样点落在立方体 [-box/2, box/2]^3 内部、但所有空腔球体之外。
+    空腔在立方体内随机放置（允许轻微重叠），每个空腔在 H2 持久图上
+    表现为一个显著的、长生命的空腔特征。
+
+    Args:
+        n_points: 点的数量
+        n_cavities: 空腔个数 (3~5)
+        box_size: 立方体边长
+        cavity_radius: 空腔球体半径
+        noise: 高斯噪声标准差
+
+    Returns:
+        shape (n_points, 3) 的点云数组
+    """
+    half = box_size / 2.0
+    pts = np.random.uniform(-half, half, (n_points, 3))
+
+    # 随机放置空腔中心（在立方体内，留出边缘距离）
+    margin = cavity_radius * 1.2
+    cavities = np.random.uniform(-half + margin, half - margin, (n_cavities, 3))
+
+    # 保留位于所有空腔之外的点（拒绝采样）
+    keep = np.ones(n_points, dtype=bool)
+    for c in cavities:
+        dist2 = np.sum((pts - c) ** 2, axis=1)
+        keep &= dist2 > cavity_radius ** 2
+
+    accepted = pts[keep]
+    # 若拒绝采样后点数不足，循环补采至满足要求
+    while len(accepted) < n_points:
+        extra = np.random.uniform(-half, half, (n_points, 3))
+        ekeep = np.ones(n_points, dtype=bool)
+        for c in cavities:
+            dist2 = np.sum((extra - c) ** 2, axis=1)
+            ekeep &= dist2 > cavity_radius ** 2
+        accepted = np.vstack((accepted, extra[ekeep]))
+
+    out = accepted[:n_points]
+    out += np.random.normal(0, noise, out.shape)
+    return out
