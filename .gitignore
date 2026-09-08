@@ -44,3 +44,6 @@ data/*.csv
 # Results (optional: uncomment to ignore)
 # results/*.png
 # results/*.pdf
+
+# 数据集（大文件不入库）
+data/modelnet10/
