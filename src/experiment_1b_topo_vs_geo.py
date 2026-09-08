@@ -214,15 +214,15 @@ def add_noise(points: np.ndarray, level: float) -> np.ndarray:
 
 
 def rotate_points(points: np.ndarray, degree: float) -> np.ndarray:
+    """SO(3) 随机旋转。degree 为种子整数，用于可复现的随机旋转矩阵"""
     if degree == 0:
         return points
-    theta = np.radians(degree)
-    # 绕 z 轴旋转（加上随机轴混合，使旋转更有效）
-    R = np.array([
-        [np.cos(theta), -np.sin(theta), 0],
-        [np.sin(theta), np.cos(theta), 0],
-        [0, 0, 1],
-    ])
+    rng = np.random.RandomState(int(degree))
+    # 用 QR 分解生成 SO(3) 随机旋转（Rodrigues + 随机轴）
+    q, _ = np.linalg.qr(rng.randn(3, 3))
+    R = q
+    if np.linalg.det(R) < 0:
+        R[:, 0] = -R[:, 0]
     return points @ R.T
 
 
@@ -280,12 +280,17 @@ def main():
     np.save(results_dir / "X_geo.npy", X_geo)
     np.save(results_dir / "labels.npy", y)
 
+    # 几何特征降维到与拓扑特征同维（PCA 到 25 维），公平对比
+    from sklearn.decomposition import PCA
+    pca_geo = PCA(n_components=X_topo.shape[1])
+    X_geo_pca = pca_geo.fit_transform(X_geo)
+
     # ============================================================
     # 5. 分类准确率对比
     # ============================================================
     summary_rows = []
 
-    for feat_name, X in [("拓扑特征", X_topo), ("几何特征", X_geo)]:
+    for feat_name, X in [("拓扑特征", X_topo), ("几何特征", X_geo), ("几何特征(PCA25)", X_geo_pca)]:
         scaler = StandardScaler()
         X_s = scaler.fit_transform(X)
 
@@ -319,6 +324,29 @@ def main():
         writer.writeheader()
         writer.writerows(summary_rows)
     print(f"\n[已保存] {csv_path}")
+
+    # 混淆矩阵（对每种特征类型，用固定 seed 的 SVM）
+    from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+    class_names = sorted(set(y.tolist()))
+    for feat_name, X in [("拓扑特征", X_topo), ("几何特征", X_geo), ("几何特征(PCA25)", X_geo_pca)]:
+        scaler = StandardScaler()
+        X_s = scaler.fit_transform(X)
+        X_tr, X_te, y_tr, y_te = train_test_split(
+            X_s, y, test_size=0.3, random_state=0, stratify=y
+        )
+        clf = SVC(kernel="rbf", C=10, gamma="scale")
+        clf.fit(X_tr, y_tr)
+        y_pred = clf.predict(X_te)
+        cm = confusion_matrix(y_te, y_pred, labels=class_names)
+        disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=class_names)
+        fig_cm, ax_cm = plt.subplots(figsize=(8, 7))
+        disp.plot(ax=ax_cm, colorbar=False, cmap="Blues")
+        ax_cm.set_title(f"Confusion Matrix: {feat_name} (SVM)")
+        plt.tight_layout()
+        cm_path = results_dir / f"cm_{feat_name.replace('(', '').replace(')', '').replace('/', '_')}.png"
+        plt.savefig(cm_path, dpi=130, bbox_inches="tight")
+        plt.close()
+        print(f"[已保存] {cm_path}")
 
     # ============================================================
     # 6. 可视化
