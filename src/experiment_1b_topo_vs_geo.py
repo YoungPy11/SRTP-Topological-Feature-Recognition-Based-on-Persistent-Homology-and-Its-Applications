@@ -86,35 +86,46 @@ def geometric_features_open3d(points: np.ndarray) -> np.ndarray:
 
 
 def geometric_features_numpy(points: np.ndarray) -> np.ndarray:
-    """纯 numpy/scipy 几何特征（open3d 不可用时回退）：主轴 + 凸包统计"""
+    """纯 numpy/scipy 几何特征（open3d 不可用时回退）：主轴 + 凸包 + 密度 + 形状描述子"""
+    pts = np.asarray(points, dtype=np.float64)
     # PCA 主轴
-    centered = points - points.mean(axis=0)
-    cov = centered.T @ centered / max(len(points) - 1, 1)
+    centered = pts - pts.mean(axis=0)
+    cov = centered.T @ centered / max(len(pts) - 1, 1)
     eigvals = np.linalg.eigvalsh(cov)
-    eigvals = np.sort(eigvals)[::-1]
-    if eigvals[2] > 1e-9:
-        aniso = (eigvals[0] - eigvals[2]) / eigvals[0]
-        planarity = (eigvals[1] - eigvals[2]) / eigvals[0]
-        sphericity = (eigvals[2] / eigvals[0]) ** 0.5
-    else:
-        aniso = planarity = sphericity = 0.0
-    pca_feat = np.array([*eigvals, aniso, planarity, sphericity])  # 6
+    eigvals = np.sort(eigvals)[::-1] + 1e-12  # 保证非零
+    e0, e1, e2 = eigvals[0], eigvals[1], eigvals[2]
+    # 各向异性 / 平坦度 / 球度 / 线性度
+    aniso = (e0 - e2) / e0
+    planarity = (e1 - e2) / e0
+    sphericity = (e2 / e0) ** 0.5
+    linearity = (e0 - e1) / e0
+    pca_feat = np.array([e0, e1, e2, aniso, planarity, sphericity, linearity])  # 7
 
     # 凸包
     try:
         from scipy.spatial import ConvexHull
-        hull = ConvexHull(points)
+        hull = ConvexHull(pts)
         ch_vol = hull.volume
         ch_area = hull.area
-        ch_ratio = ch_area / (ch_vol + 1e-9)
+        ch_ratio = ch_area / (ch_vol + 1e-12)
+        # 凸包顶点数占比
+        n_vert_ratio = len(hull.vertices) / len(pts)
     except Exception:
-        ch_vol, ch_area, ch_ratio = 0.0, 0.0, 0.0
-    convex_feat = np.array([ch_vol, ch_area, ch_ratio, points.shape[0]])  # 4
+        ch_vol, ch_area, ch_ratio, n_vert_ratio = 0.0, 0.0, 0.0, 0.0
+    convex_feat = np.array([ch_vol, ch_area, ch_ratio, n_vert_ratio])  # 4
 
-    # 点云范围
-    spread = points.max(axis=0) - points.min(axis=0)  # 3
+    # 点云范围 + 密度 + 最近邻距离统计
+    spread = pts.max(axis=0) - pts.min(axis=0)  # 3
+    bbox_vol = np.prod(spread + 1e-12)
+    density = len(pts) / (bbox_vol + 1e-12)
+    from scipy.spatial import cKDTree
+    tree = cKDTree(pts)
+    d_nn, _ = tree.query(pts, k=2)
+    d_nn = d_nn[:, 1]
+    nn_feat = np.array([np.mean(d_nn), np.std(d_nn), np.percentile(d_nn, 90)])  # 3
+    shape_feat = np.concatenate([spread, [density], nn_feat])  # 7
 
-    return np.concatenate([pca_feat, convex_feat, spread])
+    return np.concatenate([pca_feat, convex_feat, shape_feat])  # 18 维
 
 
 # ============================================================
