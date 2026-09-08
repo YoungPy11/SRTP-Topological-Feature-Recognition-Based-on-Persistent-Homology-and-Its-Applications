@@ -171,9 +171,10 @@ def main():
     df.to_csv(csv_path, index=False)
     print(f"\n[已保存] 汇总表: {csv_path}")
 
-    # 参数选择建议：每个对象，找到"稳定性下降可接受"的最小子采样
+    # 参数选择建议：每个对象，用"绝对 WD 阈值 = 点云直径 × 10%"判据
+    # （避免基准 WD=0 导致相对判据失效）
     print("\n" + "=" * 60)
-    print("参数选择建议（基于稳定性与耗时权衡）")
+    print("参数选择建议（绝对 WD 阈值 = 点云直径 × 10%）")
     print("=" * 60)
     for obj_name in GENERATORS:
         obj_max_dim = OBJ_MAX_DIM[obj_name]
@@ -181,19 +182,18 @@ def main():
         if len(sub) == 0:
             print(f"  {obj_name:12s}: （无数据）")
             continue
-        # 基准（100% 采样）的 WD
-        base_row = sub[sub.subsample_ratio >= 0.999]  # 避免浮点比较误差
-        if len(base_row) == 0:
-            base_wd = sub.wasserstein.iloc[0]  # 兜底
-        else:
-            base_wd = base_row.wasserstein.values[0]
-        rel = sub.wasserstein / max(base_wd, 1e-9)
-        cand = sub[rel < 1.5]
+        # 点云直径 = 基准点云最大成对距离（重新生成基准点云计算）
+        base_pts = GENERATORS[obj_name]()
+        from scipy.spatial.distance import pdist
+        dia = float(pdist(base_pts).max())
+        wd_accept = 0.1 * dia  # 绝对阈值：点云直径的 10%
+        # 找到满足 WD < 阈值 的最小子采样比例
+        cand = sub[sub.wasserstein < wd_accept]
         if len(cand) > 0:
             rec = cand.subsample_ratio.min() * 100
-            note = f"建议子采样 ≥ {rec:.0f}%（WD 波动 < 50%）"
+            note = f"建议子采样 ≥ {rec:.0f}%（WD < {wd_accept:.3f}=10%直径，直径{dia:.2f}）"
         else:
-            note = "各子采样下 WD 波动较大，建议保持高密度"
+            note = f"所有子采样 WD 均超阈值 {wd_accept:.3f}，建议保持高密度"
         print(f"  {obj_name:12s}: {note}")
 
     print("\n✅ 子任务A 参数扫描完成")
