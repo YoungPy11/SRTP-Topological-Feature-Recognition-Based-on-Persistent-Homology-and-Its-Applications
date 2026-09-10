@@ -1,0 +1,30 @@
+{
+  "perslay_topo": {
+    "cv": 0.8099999999999999,
+    "cv_std": 0.09695359714832656,
+    "test": 0.74,
+    "epochs": 28,
+    "learned_a": 2.010509729385376,
+    "learned_b": -1.0175729990005493,
+    "learned_sigma": 0.10231804102659225
+  },
+  "perslay_fused": {
+    "cv": 0.82,
+    "cv_std": 0.0748331477354788,
+    "test": 0.78,
+    "epochs": 15,
+    "learned_a": 1.9954384565353394,
+    "learned_b": -0.9897976517677307,
+    "learned_sigma": 0.10121655464172363
+  },
+  "baselines": {
+    "topk_rf_2b": {
+      "test": 0.74,
+      "note": "2B任务3 固定Top-K+RF"
+    },
+    "fuse28_rf50_2a": {
+      "test": 0.85,
+      "note": "2A冲刺 固定融合28D+RF(50)"
+    }
+  }
+}
