@@ -102,20 +102,21 @@ class PersLayLite(nn.Module):
 
 
 class TopoClassifier(nn.Module):
-    """PersLayLite + MLP 分类头（可选拼接时频特征）。"""
+    """PersLayLite + MLP 分类头（可选拼接时频特征，支持二分类/多分类）。"""
 
     def __init__(self, grid_size=20, tf_dim=0, hidden=32, dropout=0.3,
-                 init_sigma=0.1, pers_range=(0.0, 3.0)):
+                 init_sigma=0.1, pers_range=(0.0, 3.0), num_classes=1):
         super().__init__()
         self.perslay = PersLayLite(grid_size, init_sigma, pers_range)
         in_dim = grid_size * grid_size + tf_dim
         self.tf_dim = tf_dim
+        self.num_classes = num_classes
         self.head = nn.Sequential(
             nn.LayerNorm(in_dim),
             nn.Linear(in_dim, hidden),
             nn.ReLU(),
             nn.Dropout(dropout),
-            nn.Linear(hidden, 1),
+            nn.Linear(hidden, num_classes),
         )
 
     def forward(self, pts, mask, tf_feats=None):
@@ -124,4 +125,6 @@ class TopoClassifier(nn.Module):
             x = torch.cat([topo, tf_feats], dim=1)
         else:
             x = topo
-        return self.head(x).squeeze(-1)
+        out = self.head(x)
+        # 二分类(num_classes=1)输出 logit 标量；多分类输出 (B, C) logits
+        return out.squeeze(-1) if self.num_classes == 1 else out
