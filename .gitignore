@@ -48,3 +48,4 @@ data/*.csv
 # 数据集（大文件不入库）
 data/modelnet10/
 data/ecg200/
+data/forda/
